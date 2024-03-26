@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:x2trivia/app/app.dart';
 import 'package:x2trivia/domain/repositories/user_repository.dart';
 
-import 'app/util/app_block_observer.dart';
+import 'app/util/app_bloc_observer.dart';
 
 void bootstrap() {
   FlutterError.onError = (details) {
@@ -22,7 +22,7 @@ void bootstrap() {
     WidgetsFlutterBinding.ensureInitialized();
 
     runApp(TriviaApp(
-      UserRepositoryImpl(),
+      userRepository,
     ));
   }, (error, stackTrace) {
     log('runZonedGuarded: Caught error', error: error, stackTrace: stackTrace);

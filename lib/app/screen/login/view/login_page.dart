@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -8,10 +9,10 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('Login Page'),
+        title: Text(AppLocalizations.of(context)!.loginPage),
       ),
       body: Center(
-        child: Text('Login Page'),
+        child: Text(AppLocalizations.of(context)!.loginPage),
       ),
     );
   }
