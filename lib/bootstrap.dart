@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:x2trivia/app/app.dart';
-import 'package:x2trivia/domain/repositories/user_repository.dart';
+import 'package:x2trivia/data/repositories/data_user_repository.dart';
 
 import 'app/util/app_bloc_observer.dart';
 
@@ -16,7 +16,7 @@ void bootstrap() {
   Bloc.observer = const AppBlocObserver();
 
   // TODO add repositories
-  final userRepository = UserRepositoryImpl();
+  final userRepository = DataUserRepository();
 
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
