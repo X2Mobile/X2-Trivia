@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:x2trivia/app/screen/categories/view/categories_page.dart';
 import 'package:x2trivia/app/screen/leaderboard/view/leaderboard_page.dart';
+import 'package:x2trivia/app/util/build_context_helper.dart';
 
 import '../../../../domain/repositories/user_repository.dart';
 import '../bloc/home_bloc.dart';
@@ -78,7 +78,7 @@ class _HomePageViewState extends State<HomePageView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.x2Trivia,
+                  context.strings.x2Trivia,
                   style: TextStyle(
                     fontSize: 42,
                     color: Theme.of(context).colorScheme.primary,
@@ -89,14 +89,14 @@ class _HomePageViewState extends State<HomePageView> {
                   width: double.infinity,
                   child: FilledButton(
                       onPressed: () => Navigator.of(context, rootNavigator: true).push(CategoriesPage.route()),
-                      child: Text(AppLocalizations.of(context)!.startGame)
+                      child: Text(context.strings.startGame)
                   ),
                 ),
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton(
                       onPressed: () => Navigator.of(context, rootNavigator: true).push(LeaderboardPage.route()),
-                      child: Text(AppLocalizations.of(context)!.leaderboard)
+                      child: Text(context.strings.leaderboard)
                   ),
                 ),
                 Row(
@@ -105,7 +105,7 @@ class _HomePageViewState extends State<HomePageView> {
                     Expanded(
                       child: Row(
                         children: [
-                          Text(AppLocalizations.of(context)!.signedIn),
+                          Text(context.strings.signedIn),
                           Expanded(
                             child: Text(
                               username,
@@ -121,7 +121,7 @@ class _HomePageViewState extends State<HomePageView> {
                     ),
                     TextButton(
                       onPressed: () => _onSignOut(),
-                      child: Text(AppLocalizations.of(context)!.signOut),
+                      child: Text(context.strings.signOut),
                     ),
                   ],
                 ),
@@ -133,15 +133,15 @@ class _HomePageViewState extends State<HomePageView> {
 
   Widget signOutConfirmation(BuildContext context) {
     return AlertDialog(
-      title: Text(AppLocalizations.of(context)!.signOutConfirmation),
+      title: Text(context.strings.signOutConfirmation),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text(AppLocalizations.of(context)!.cancel),
+          child: Text(context.strings.cancel),
         ),
         TextButton(
           onPressed: () => _onSignOutConfirmation(),
-          child: Text(AppLocalizations.of(context)!.signOut),
+          child: Text(context.strings.signOut),
         ),
       ],
     );

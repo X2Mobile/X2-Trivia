@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:x2trivia/app/util/build_context_helper.dart';
 
 class LeaderboardPage extends StatelessWidget {
   const LeaderboardPage({super.key});
@@ -13,10 +13,10 @@ class LeaderboardPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(AppLocalizations.of(context)!.leaderboard),
+          title: Text(context.strings.leaderboard),
         ),
         body: Center(
-            child: Text(AppLocalizations.of(context)!.leaderboard)
+            child: Text(context.strings.leaderboard)
         )
     );
   }

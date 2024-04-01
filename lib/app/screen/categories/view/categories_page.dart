@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:x2trivia/app/screen/categories/bloc/categories_bloc.dart';
 import 'package:x2trivia/app/screen/categories/bloc/categories_event.dart';
 import 'package:x2trivia/app/screen/categories/bloc/categories_state.dart';
+import 'package:x2trivia/app/util/build_context_helper.dart';
 
 import '../../../../data/utils/constants.dart';
 import '../../../../domain/models/category.dart';
@@ -21,11 +21,9 @@ class CategoriesPage extends StatelessWidget {
   );
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<CategoriesBloc, CategoriesState>(
-    builder: (_, state) {
+  Widget build(BuildContext context) {
       return const CategoriesPageView();
-    },
-  );
+  }
 }
 
 class CategoriesPageView extends StatefulWidget {
@@ -44,9 +42,9 @@ class _CategoriesPageViewState extends State<CategoriesPageView> {
     selectCategoryBloc = context.read<CategoriesBloc>();
   }
 
-  void _onCategorySelected(Category category) => selectCategoryBloc.add(SelectCategoryEvent(category: category));
+  void _onCategorySelected(Category category) => selectCategoryBloc.add(CategorySelect(category: category));
 
-  void _onCategoryUnselected() => selectCategoryBloc.add(const UnselectCategoryEvent());
+  void _onCategoryUnselected() => selectCategoryBloc.add(const CategoryUnselect());
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +54,7 @@ class _CategoriesPageViewState extends State<CategoriesPageView> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(AppLocalizations.of(context)!.selectCategory),
+        title: Text(context.strings.selectCategory),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -81,15 +79,13 @@ class _CategoriesPageViewState extends State<CategoriesPageView> {
                 },
               ),
             ),
-            Flexible(
-              child: SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                    onPressed: selectedCategory != null
-                        ? () => Navigator.of(context, rootNavigator: true).push(GamePage.route(category: selectedCategory))
-                        : null,
-                    child: Text(AppLocalizations.of(context)!.startGame)
-                ),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                  onPressed: selectedCategory != null
+                      ? () => Navigator.of(context, rootNavigator: true).push(GamePage.route(category: selectedCategory))
+                      : null,
+                  child: Text(context.strings.startGame)
               ),
             ),
           ],

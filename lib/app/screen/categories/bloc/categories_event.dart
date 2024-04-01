@@ -1,15 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:x2trivia/domain/models/category.dart';
 
-sealed class ManageCategoryEvent extends Equatable {
-  const ManageCategoryEvent();
+sealed class CategoriesEvent extends Equatable {
+  const CategoriesEvent();
 
   @override
   List<Object> get props => [];
 }
 
-final class SelectCategoryEvent extends ManageCategoryEvent {
-  const SelectCategoryEvent({
+final class CategorySelect extends CategoriesEvent {
+  const CategorySelect({
     required this.category,
   });
 
@@ -19,8 +19,8 @@ final class SelectCategoryEvent extends ManageCategoryEvent {
   List<Object> get props => [category];
 }
 
-final class UnselectCategoryEvent extends ManageCategoryEvent {
-  const UnselectCategoryEvent();
+final class CategoryUnselect extends CategoriesEvent {
+  const CategoryUnselect();
 
   @override
   List<Object> get props => [];
