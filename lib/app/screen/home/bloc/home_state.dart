@@ -7,10 +7,7 @@ class HomeState extends Equatable {
 
   final String? user;
 
-  HomeState copyWith({
-    String? user
-  }) =>
-      HomeState(
+  HomeState copyWith({String? user}) => HomeState(
         user: user,
       );
 

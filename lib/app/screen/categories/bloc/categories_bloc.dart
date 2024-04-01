@@ -9,16 +9,16 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   }
 
   void _onSelectCategory(
-      CategorySelect event,
-      Emitter<CategoriesState> emit,
-      ) {
+    CategorySelect event,
+    Emitter<CategoriesState> emit,
+  ) {
     emit(state.copyWith(category: event.category));
   }
 
   void _onUnselectCategory(
-      CategoryUnselect event,
-      Emitter<CategoriesState> emit,
-      ) {
+    CategoryUnselect event,
+    Emitter<CategoriesState> emit,
+  ) {
     emit(state.copyWith(category: null));
   }
 }

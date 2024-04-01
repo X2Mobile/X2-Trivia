@@ -5,8 +5,8 @@ class LeaderboardPage extends StatelessWidget {
   const LeaderboardPage({super.key});
 
   static Route<void> route() => MaterialPageRoute(
-    builder: (context) => const LeaderboardPage(),
-  );
+        builder: (context) => const LeaderboardPage(),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +15,6 @@ class LeaderboardPage extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(context.strings.leaderboard),
         ),
-        body: Center(
-            child: Text(context.strings.leaderboard)
-        )
-    );
+        body: Center(child: Text(context.strings.leaderboard)));
   }
 }

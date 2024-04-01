@@ -13,14 +13,14 @@ class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   static Route<void> route({String? user}) => MaterialPageRoute(
-    builder: (context) => BlocProvider(
-      create: (BuildContext context) => HomeBloc(
-        userRepository: context.read<UserRepository>(),
-        user: user,
-      ),
-      child: const HomePageView(),
-    ),
-  );
+        builder: (context) => BlocProvider(
+          create: (BuildContext context) => HomeBloc(
+            userRepository: context.read<UserRepository>(),
+            user: user,
+          ),
+          child: const HomePageView(),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {

@@ -10,17 +10,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     String? user,
   })  : _userRepository = userRepository,
         super(HomeState(
-        user: user,
-      )) {
+          user: user,
+        )) {
     on<SignOutEvent>(_onSignOut);
   }
 
   final UserRepository _userRepository;
 
   Future<void> _onSignOut(
-      SignOutEvent event,
-      Emitter<HomeState> emit,
-      ) async {
+    SignOutEvent event,
+    Emitter<HomeState> emit,
+  ) async {
     // await _userRepository.logoutUser();
     emit(state.copyWith(
       user: null,

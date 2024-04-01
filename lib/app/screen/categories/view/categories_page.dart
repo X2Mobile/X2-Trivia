@@ -14,15 +14,15 @@ class CategoriesPage extends StatelessWidget {
   const CategoriesPage({super.key});
 
   static Route<Category> route() => MaterialPageRoute(
-    builder: (context) => BlocProvider(
-      create: (context) => CategoriesBloc(),
-      child: const CategoriesPageView(),
-    ),
-  );
+        builder: (context) => BlocProvider(
+          create: (context) => CategoriesBloc(),
+          child: const CategoriesPageView(),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
-      return const CategoriesPageView();
+    return const CategoriesPageView();
   }
 }
 
@@ -85,8 +85,7 @@ class _CategoriesPageViewState extends State<CategoriesPageView> {
                   onPressed: selectedCategory != null
                       ? () => Navigator.of(context, rootNavigator: true).push(GamePage.route(category: selectedCategory))
                       : null,
-                  child: Text(context.strings.startGame)
-              ),
+                  child: Text(context.strings.startGame)),
             ),
           ],
         ),
