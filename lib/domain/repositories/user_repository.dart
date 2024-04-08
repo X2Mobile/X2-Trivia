@@ -1,10 +1,11 @@
-abstract class UserRepository {
-  Future<String> getUser();
-}
+import 'package:firebase_auth/firebase_auth.dart';
 
-final class UserRepositoryImpl implements UserRepository {
-  @override
-  Future<String> getUser() async {
-    return 'user';
-  }
+abstract class UserRepository {
+  Stream<User?> getUser();
+
+  Stream<User> loginUser(String email, String password);
+
+  Future<void> logoutUser();
+
+  Stream<User> createUser(String? name, String email, String password);
 }

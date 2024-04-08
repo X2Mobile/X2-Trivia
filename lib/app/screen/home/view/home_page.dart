@@ -5,12 +5,15 @@ import 'package:x2trivia/app/screen/leaderboard/view/leaderboard_page.dart';
 import 'package:x2trivia/app/util/build_context_helper.dart';
 
 import '../../../../domain/repositories/user_repository.dart';
+import '../../login/view/login_page.dart';
 import '../bloc/home_bloc.dart';
 import '../bloc/home_event.dart';
 import '../bloc/home_state.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const HomePage(this.displayName, {super.key});
+
+  final String? displayName;
 
   static Route<void> route({String? user}) => MaterialPageRoute(
         builder: (context) => BlocProvider(
@@ -27,6 +30,7 @@ class HomePage extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) => HomeBloc(
         userRepository: context.read<UserRepository>(),
+        user: displayName,
       ),
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (_, state) {
@@ -62,7 +66,7 @@ class _HomePageViewState extends State<HomePageView> {
 
   void _onSignOutConfirmation() {
     homeBloc.add(const SignOutEvent());
-    Navigator.pop(context);
+    Navigator.of(context).pushAndRemoveUntil(LoginPage.route(), (Route<dynamic> route) => false);
   }
 
   @override

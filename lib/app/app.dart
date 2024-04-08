@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:x2trivia/app/screen/home/view/home_page.dart';
 import 'package:x2trivia/app/screen/login/view/login_page.dart';
 import 'package:x2trivia/domain/repositories/user_repository.dart';
 
@@ -13,7 +15,6 @@ class TriviaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MultiRepositoryProvider(
         providers: [
-          //TODO add other repositories
           RepositoryProvider(create: (context) => _userRepository),
         ],
         child: const AppView(),
@@ -30,6 +31,7 @@ class AppView extends StatefulWidget {
 class _AppState extends State<AppView> {
   @override
   Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
     return MaterialApp(
       title: 'X2 Trivia Game',
       localizationsDelegates: const [
@@ -45,7 +47,7 @@ class _AppState extends State<AppView> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const LoginPage(), // TODO change this to categories if logged in
+      home: user == null ? const LoginPage() : HomePage(user.displayName),
     );
   }
 }

@@ -1,7 +1,12 @@
 {
   "helloWorld": "Hello World!",
+  "login": "Login",
+  "email": "Email",
+  "password": "Password",
+  "name": "Name",
+  "register": "Register",
   "x2Trivia": "X2 Trivia",
-  "loginPage": "Login Page",
+  "loginPage": "Login To X2 Trivia",
   "signedIn": "Signed in as ",
   "homePage": "Home Page",
   "selectCategory": "Select category",
@@ -9,5 +14,6 @@
   "leaderboard": "Leaderboard",
   "signOutConfirmation": "Are you sure you want to sign out?",
   "signOut": "Sign out",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "unknownLoginError": "An unknown error occurred while trying to log in."
 }

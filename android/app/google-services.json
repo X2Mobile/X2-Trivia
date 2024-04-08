@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "640972954170",
+    "project_id": "x2-trivia",
+    "storage_bucket": "x2-trivia.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:640972954170:android:daf64721c7331fd826f303",
+        "android_client_info": {
+          "package_name": "com.x2mobile.trivia.x2trivia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCnmtjGcabcCLhEs9l4Y0kMNJNZ4fyJLY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
