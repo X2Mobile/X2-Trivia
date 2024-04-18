@@ -10,7 +10,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({
     required UserRepository userRepository,
   })  : _userRepository = userRepository,
-        super(const LoginState()) {
+        super(const LoginState(loading: false)) {
     on<Login>(_onLogin);
     on<Register>(_onRegister);
   }

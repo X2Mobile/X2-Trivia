@@ -4,34 +4,36 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../../../data/exceptions/login_exceptions.dart';
 
 class LoginState extends Equatable {
-  const LoginState({this.user, this.loading, this.exception});
+  const LoginState({required this.loading});
 
-  final User? user;
-  final bool? loading;
-  final AuthenticationException? exception;
-
-  LoginState copyWith({User? user, bool? loading, AuthenticationException? exception}) => LoginState(
-        user: user,
-        loading: loading,
-        exception: exception,
-      );
+  final bool loading;
 
   @override
-  List<Object?> get props => [user, exception, loading];
+  List<Object?> get props => [loading];
 }
 
 class SuccessLoginState extends LoginState {
   const SuccessLoginState({
-    required User user,
-  }) : super(user: user);
+    required this.user,
+  }) : super(loading: false);
+
+  final User user;
+
+  @override
+  List<Object?> get props => [user];
 }
 
 class ErrorLoginState extends LoginState {
   const ErrorLoginState({
-    required AuthenticationException exception,
-  }) : super(user: null, exception: exception);
+    required this.exception,
+  }) : super(loading: false);
+
+  final AuthenticationException exception;
+
+  @override
+  List<Object?> get props => [exception];
 }
 
 class LoadingLoginState extends LoginState {
-  const LoadingLoginState() : super(user: null, exception: null, loading: true);
+  const LoadingLoginState() : super(loading: true);
 }
