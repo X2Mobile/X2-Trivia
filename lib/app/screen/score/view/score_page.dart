@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:x2trivia/app/screen/score/bloc/score_state.dart';
 import 'package:x2trivia/app/util/build_context_helper.dart';
-import 'package:x2trivia/data/exceptions/login_exceptions.dart';
+import 'package:x2trivia/domain/repositories/firestore_repository.dart';
 
 import '../../../../domain/models/category.dart' as category_import;
 import '../../../../domain/repositories/user_repository.dart';
@@ -28,6 +28,7 @@ class ScorePage extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) => ScoreBloc(
         userRepository: context.read<UserRepository>(),
+        firestoreRepository: context.read<FirestoreRepository>(),
         category: category,
         score: score,
       ),
@@ -65,7 +66,7 @@ class _ScorePageViewState extends State<ScorePageView> {
           }
           if (state is ErrorScoreState) {
             Fluttertoast.showToast(
-              msg: state.exception.getMessage(context),
+              msg: state.exception,
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
             );

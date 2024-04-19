@@ -1,7 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../data/exceptions/login_exceptions.dart';
-
 class ScoreState extends Equatable {
   const ScoreState();
 
@@ -18,7 +16,7 @@ class ErrorScoreState extends ScoreState {
     required this.exception,
   }) : super();
 
-  final AuthenticationException exception;
+  final String exception;
 
   @override
   List<Object?> get props => [exception];
