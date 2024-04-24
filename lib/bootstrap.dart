@@ -20,7 +20,7 @@ void bootstrap() {
 
   // TODO add repositories
   final userRepository = DataUserRepository();
-  final firestoreRepository = DataFirestoreRepository();
+  final firestoreRepository = DataScoreRepository();
 
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();

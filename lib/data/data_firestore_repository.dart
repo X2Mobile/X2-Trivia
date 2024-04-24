@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:x2trivia/domain/repositories/firestore_repository.dart';
+import 'package:x2trivia/domain/repositories/score_repository.dart';
 
 import '../domain/models/score.dart';
 
-class DataFirestoreRepository extends FirestoreRepository {
+class DataScoreRepository extends ScoreRepository {
   @override
   Future<void> addScore(Score score) async {
     try {

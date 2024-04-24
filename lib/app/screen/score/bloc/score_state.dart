@@ -7,12 +7,12 @@ class ScoreState extends Equatable {
   List<Object?> get props => [];
 }
 
-class SuccessScoreState extends ScoreState {
-  const SuccessScoreState();
+class ScoreLoadSuccess extends ScoreState {
+  const ScoreLoadSuccess();
 }
 
-class ErrorScoreState extends ScoreState {
-  const ErrorScoreState({
+class ScoreLoadError extends ScoreState {
+  const ScoreLoadError({
     required this.exception,
   }) : super();
 
@@ -22,6 +22,6 @@ class ErrorScoreState extends ScoreState {
   List<Object?> get props => [exception];
 }
 
-class LoadingScoreState extends ScoreState {
-  const LoadingScoreState();
+class ScoreLoadInProgress extends ScoreState {
+  const ScoreLoadInProgress();
 }
