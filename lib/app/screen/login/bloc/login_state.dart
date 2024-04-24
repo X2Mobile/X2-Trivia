@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../../../data/exceptions/login_exceptions.dart';
 
 class LoginState extends Equatable {
-  const LoginState({required this.loading});
+  const LoginState({this.loading = false});
 
   final bool loading;
 
@@ -15,7 +15,7 @@ class LoginState extends Equatable {
 class SuccessLoginState extends LoginState {
   const SuccessLoginState({
     required this.user,
-  }) : super(loading: false);
+  }) : super();
 
   final User user;
 
@@ -26,7 +26,7 @@ class SuccessLoginState extends LoginState {
 class ErrorLoginState extends LoginState {
   const ErrorLoginState({
     required this.exception,
-  }) : super(loading: false);
+  }) : super();
 
   final AuthenticationException exception;
 

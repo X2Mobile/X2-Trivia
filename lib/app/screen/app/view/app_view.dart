@@ -61,11 +61,7 @@ class _AppState extends State<AppView> {
           useMaterial3: true,
         ),
         home: BlocBuilder<AppBloc, AppState>(builder: (_, state) {
-          if (state.user == null) {
-            return const LoginPage();
-          } else {
-            return HomePage(state.user!.displayName);
-          }
+          return state.user == null ? const LoginPage() : HomePage(state.user!.displayName);
         }));
   }
 }
