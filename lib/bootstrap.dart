@@ -6,7 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:x2trivia/app/screen/app/view/app_page.dart';
 import 'package:x2trivia/data/data_user_repository.dart';
-import 'package:x2trivia/data/data_firestore_repository.dart';
+import 'package:x2trivia/data/data_score_repository.dart';
 
 import 'app/util/app_bloc_observer.dart';
 import 'firebase_options.dart';

@@ -6,38 +6,37 @@ import 'package:x2trivia/domain/models/score.dart';
 import 'package:x2trivia/domain/repositories/score_repository.dart';
 import 'package:x2trivia/domain/repositories/user_repository.dart';
 
-import '../../../../domain/models/category.dart';
-
 class ScoreBloc extends Bloc<ScoreEvent, ScoreState> {
   ScoreBloc({
     required this.userRepository,
     required this.scoreRepository,
-    required this.category,
-    required this.score,
-  }) : super(const ScoreState()) {
+    required category,
+    required score,
+  }) : super(ScoreInitial(score, category)) {
     on<SaveScoreEvent>(_onSaveScore);
   }
 
   final UserRepository userRepository;
   final ScoreRepository scoreRepository;
-  final Category category;
-  final int score;
 
-  Future<void> _onSaveScore(SaveScoreEvent event, Emitter<ScoreState> emit) async {
-    emit(const ScoreLoadInProgress());
+  Future<void> _onSaveScore(
+    SaveScoreEvent event,
+    Emitter<ScoreState> emit,
+  ) async {
+    emit(ScoreLoadInProgress.fromState(state));
     try {
       User? currentUser = await userRepository.getUser().first;
       await scoreRepository.addScore(
         Score(
             email: currentUser!.email!,
             name: currentUser.displayName!,
-            categoryId: category.id,
-            score: score,
+            categoryId: state.category.id,
+            score: state.score,
             date: DateTime.now()),
       );
-      emit(const ScoreLoadSuccess());
+      emit(ScoreLoadSuccess.fromState(state));
     } catch (error) {
-      emit(ScoreLoadError(exception: error.toString()));
+      emit(ScoreLoadError.fromState(state, error.toString()));
     }
   }
 }

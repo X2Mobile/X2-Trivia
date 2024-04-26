@@ -12,15 +12,15 @@ import '../bloc/app_state.dart';
 
 class TriviaApp extends StatelessWidget {
   final UserRepository _userRepository;
-  final ScoreRepository _firestoreRepository;
+  final ScoreRepository _scoreRepository;
 
-  const TriviaApp(this._userRepository, this._firestoreRepository, {super.key});
+  const TriviaApp(this._userRepository, this._scoreRepository, {super.key});
 
   @override
   Widget build(BuildContext context) => MultiRepositoryProvider(
         providers: [
           RepositoryProvider(create: (context) => _userRepository),
-          RepositoryProvider(create: (context) => _firestoreRepository),
+          RepositoryProvider(create: (context) => _scoreRepository),
         ],
         child: BlocProvider(
           create: (context) => AppBloc(userRepository: _userRepository),

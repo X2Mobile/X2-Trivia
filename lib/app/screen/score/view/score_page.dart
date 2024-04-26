@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:x2trivia/app/screen/score/bloc/score_state.dart';
 import 'package:x2trivia/app/util/build_context_helper.dart';
+import 'package:x2trivia/domain/models/category.dart';
 import 'package:x2trivia/domain/repositories/score_repository.dart';
 
-import '../../../../domain/models/category.dart' as category_import;
 import '../../../../domain/repositories/user_repository.dart';
 import '../../leaderboard/view/leaderboard_page.dart';
 import '../bloc/score_bloc.dart';
@@ -14,14 +14,14 @@ import '../bloc/score_event.dart';
 class ScorePage extends StatelessWidget {
   const ScorePage({Key? key, required this.score, required this.category}) : super(key: key);
 
-  static Route<void> route({required int score, required category_import.Category category}) => MaterialPageRoute(
+  static Route<void> route({required int score, required Category category}) => MaterialPageRoute(
       builder: (context) => ScorePage(
             score: score,
             category: category,
           ));
 
   final int score;
-  final category_import.Category category;
+  final Category category;
 
   @override
   Widget build(BuildContext context) {
@@ -32,19 +32,13 @@ class ScorePage extends StatelessWidget {
         category: category,
         score: score,
       ),
-      child: ScorePageView(
-        score: score,
-        category: category,
-      ),
+      child: const ScorePageView(),
     );
   }
 }
 
 class ScorePageView extends StatefulWidget {
-  const ScorePageView({Key? key, required this.score, required this.category}) : super(key: key);
-
-  final int score;
-  final category_import.Category category;
+  const ScorePageView({Key? key}) : super(key: key);
 
   @override
   State<ScorePageView> createState() => _ScorePageViewState();
@@ -52,15 +46,11 @@ class ScorePageView extends StatefulWidget {
 
 class _ScorePageViewState extends State<ScorePageView> {
   late final ScoreBloc _scoreBloc;
-  late final int _score;
-  late final category_import.Category _category;
 
   @override
   void initState() {
     super.initState();
     _scoreBloc = context.read<ScoreBloc>();
-    _score = widget.score;
-    _category = widget.category;
   }
 
   void _onSaveScore() {
@@ -97,13 +87,17 @@ class _ScorePageViewState extends State<ScorePageView> {
                         fontSize: 50,
                       ),
                     ),
-                    Text(
-                      _score.toString(),
-                      style: TextStyle(
-                        fontSize: 80,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                    BlocBuilder<ScoreBloc, ScoreState>(
+                      builder: (_, state) {
+                        return Text(
+                          state.score.toString(),
+                          style: TextStyle(
+                            fontSize: 80,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -116,13 +110,17 @@ class _ScorePageViewState extends State<ScorePageView> {
                         fontSize: 20,
                       ),
                     ),
-                    Text(
-                      _category.name,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                    BlocBuilder<ScoreBloc, ScoreState>(
+                      builder: (_, state) {
+                        return Text(
+                          state.category.name,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
