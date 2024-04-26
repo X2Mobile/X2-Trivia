@@ -12,4 +12,18 @@ class DataScoreRepository extends ScoreRepository {
       throw Exception(error.toString());
     }
   }
+
+  @override
+  Future<List<Score>> getScores(DateTime from, DateTime to) async {
+    try {
+      var scores = await FirebaseFirestore.instance
+          .collection("scores")
+          .where("date", isGreaterThanOrEqualTo: from)
+          .where("date", isLessThanOrEqualTo: to)
+          .get();
+      return scores.docs.map((document) => Score.fromJson(document.data())).toList();
+    } catch (error) {
+      throw Exception(error.toString());
+    }
+  }
 }
