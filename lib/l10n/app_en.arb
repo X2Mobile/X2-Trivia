@@ -1,5 +1,13 @@
 {
   "helloWorld": "Hello World!",
   "x2Trivia": "X2 Trivia",
-  "loginPage": "Login Page"
+  "loginPage": "Login Page",
+  "signedIn": "Signed in as ",
+  "homePage": "Home Page",
+  "selectCategory": "Select category",
+  "startGame": "Start game",
+  "leaderboard": "Leaderboard",
+  "signOutConfirmation": "Are you sure you want to sign out?",
+  "signOut": "Sign out",
+  "cancel": "Cancel"
 }
