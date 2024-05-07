@@ -24,6 +24,8 @@ dependencies:
   firebase_auth: ^4.17.0
   collection: ^1.18.0
   cloud_firestore: ^4.15.8
+  http: ^1.2.0
+  html_unescape: ^2.0.0
 
 dev_dependencies:
   flutter_test:
