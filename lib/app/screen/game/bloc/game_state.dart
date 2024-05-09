@@ -12,8 +12,8 @@ sealed class GameState extends Equatable {
   const GameState({required this.category});
 }
 
-class GameLoadSuccess extends GameState {
-  const GameLoadSuccess({
+class GameInProgress extends GameState {
+  const GameInProgress({
     required super.category,
     required this.questions,
     this.questionIndex = 0,
@@ -28,13 +28,13 @@ class GameLoadSuccess extends GameState {
   final bool revealAnswer;
   final Answer? selectedAnswer;
 
-  GameLoadSuccess copyWith({
+  GameInProgress copyWith({
     int? questionIndex,
     int? score,
     bool? revealAnswer,
     Answer? selectedAnswer,
   }) =>
-      GameLoadSuccess(
+      GameInProgress(
           category: category,
           questions: questions,
           questionIndex: questionIndex ?? this.questionIndex,

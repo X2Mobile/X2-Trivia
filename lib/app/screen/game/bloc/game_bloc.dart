@@ -28,7 +28,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     try {
       final List<Question> questions = await questionsRepository.getQuestions(category);
 
-      emit(GameLoadSuccess(category: category, questions: questions));
+      emit(GameInProgress(category: category, questions: questions));
     } catch (error) {
       emit(GameLoadError(category: category, exception: error.toString()));
     }
@@ -38,7 +38,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       AnswerSelect event,
       Emitter<GameState> emit,
   ) {
-    final currentState = state as GameLoadSuccess;
+    final currentState = state as GameInProgress;
     emit(currentState.copyWith(selectedAnswer: event.answer));
   }
 
@@ -46,7 +46,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       AnswerUnselect event,
       Emitter<GameState> emit,
   ) {
-    final currentState = state as GameLoadSuccess;
+    final currentState = state as GameInProgress;
     emit(currentState.copyWith(selectedAnswer: null));
   }
 
@@ -54,7 +54,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     GameValidateAnswerEvent event,
     Emitter<GameState> emit,
   ) {
-    final currentState = state as GameLoadSuccess;
+    final currentState = state as GameInProgress;
     final currentScore = currentState.score;
     final correctAnswer = currentState.selectedAnswer!.isCorrect;
     emit(currentState.copyWith(score: correctAnswer ? currentScore + 1 : currentScore, revealAnswer: true));
@@ -64,7 +64,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     GameSubmitAnswerEvent event,
     Emitter<GameState> emit,
   ) {
-    final currentState = state as GameLoadSuccess;
+    final currentState = state as GameInProgress;
     final currentQuestionIndex = currentState.questionIndex;
     if (currentQuestionIndex + 1 == currentState.questions.length) {
       emit(GameEnded(category: category, score: currentState.score));

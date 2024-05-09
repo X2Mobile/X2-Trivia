@@ -91,7 +91,7 @@ class _GamePageViewState extends State<GamePageView> {
           ),
           body: BlocBuilder<GameBloc, GameState>(
             builder: (_, state) {
-              if (state is GameLoadSuccess) {
+              if (state is GameInProgress) {
                 int score = state.score;
                 List<Question> questions = state.questions;
                 int questionIndex = state.questionIndex;
