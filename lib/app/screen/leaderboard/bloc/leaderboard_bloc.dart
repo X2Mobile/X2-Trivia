@@ -11,16 +11,16 @@ class LeaderboardBloc extends Bloc<LeaderboardEvent, LeaderboardState> {
   LeaderboardBloc({
     required this.scoreRepository,
   }) : super(const LeaderboardLoadInProgress()) {
-    on<LeaderboardRequestedEvent>(_onLeaderboardRequested);
+    on<LeaderboardRequested>(_onLeaderboardRequested);
     on<LeaderboardSort>(_onSort);
     on<LeaderboardCategorySelect>(_onSelectCategory);
-    add(const LeaderboardRequestedEvent());
+    add(const LeaderboardRequested());
   }
 
   final ScoreRepository scoreRepository;
 
   Future<void> _onLeaderboardRequested(
-    LeaderboardRequestedEvent event,
+    LeaderboardRequested event,
     Emitter<LeaderboardState> emit,
   ) async {
     try {
