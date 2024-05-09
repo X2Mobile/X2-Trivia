@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:x2trivia/domain/models/answer.dart';
 import 'package:x2trivia/domain/models/category.dart';
 
 sealed class GameEvent extends Equatable {
@@ -19,15 +20,29 @@ final class GameQuestionsRequestedEvent extends GameEvent {
   List<Object> get props => [category];
 }
 
-final class GameValidateAnswerEvent extends GameEvent {
-  const GameValidateAnswerEvent({
-    required this.correctAnswer,
+final class AnswerSelect extends GameEvent {
+  const AnswerSelect({
+    required this.answer,
   });
 
-  final bool correctAnswer;
+  final Answer answer;
 
   @override
-  List<Object> get props => [correctAnswer];
+  List<Object> get props => [answer];
+}
+
+final class AnswerUnselect extends GameEvent {
+  const AnswerUnselect();
+
+  @override
+  List<Object> get props => [];
+}
+
+final class GameValidateAnswerEvent extends GameEvent {
+  const GameValidateAnswerEvent();
+
+  @override
+  List<Object> get props => [];
 }
 
 final class GameSubmitAnswerEvent extends GameEvent {

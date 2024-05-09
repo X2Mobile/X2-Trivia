@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:x2trivia/domain/models/answer.dart';
 import 'package:x2trivia/domain/models/category.dart';
 import 'package:x2trivia/domain/models/question.dart';
 
@@ -8,9 +9,7 @@ sealed class GameState extends Equatable {
   @override
   List<Object?> get props => [];
 
-  const GameState({
-    required this.category
-  });
+  const GameState({required this.category});
 }
 
 class GameLoadSuccess extends GameState {
@@ -20,21 +19,32 @@ class GameLoadSuccess extends GameState {
     this.questionIndex = 0,
     this.score = 0,
     this.revealAnswer = false,
+    this.selectedAnswer
   });
 
   final List<Question> questions;
   final int questionIndex;
   final int score;
   final bool revealAnswer;
+  final Answer? selectedAnswer;
 
   GameLoadSuccess copyWith({
     int? questionIndex,
     int? score,
     bool? revealAnswer,
-  }) => GameLoadSuccess(category: category, questions: questions, questionIndex: questionIndex ?? this.questionIndex, score: score ?? this.score, revealAnswer: revealAnswer ?? this.revealAnswer);
+    Answer? selectedAnswer,
+  }) =>
+      GameLoadSuccess(
+          category: category,
+          questions: questions,
+          questionIndex: questionIndex ?? this.questionIndex,
+          score: score ?? this.score,
+          revealAnswer: revealAnswer ?? this.revealAnswer,
+          selectedAnswer: selectedAnswer,
+      );
 
   @override
-  List<Object?> get props => [questions, questionIndex, score, revealAnswer];
+  List<Object?> get props => [questions, questionIndex, score, revealAnswer, selectedAnswer];
 }
 
 class GameLoadError extends GameState {

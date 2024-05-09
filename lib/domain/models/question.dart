@@ -1,11 +1,12 @@
 import 'package:x2trivia/app/util/utils.dart';
+import 'package:x2trivia/domain/models/answer.dart';
 
 final class Question {
   final String type;
   final String difficulty;
   final String category;
   final String question;
-  late final Map<String, bool> answers;
+  late final List<Answer> answers;
 
   Question({
     required this.type,
@@ -25,6 +26,6 @@ final class Question {
     tempAnswers.add(correctAnswer);
     tempAnswers.shuffle();
 
-    answers = {for (var answer in tempAnswers) answer: answer == correctAnswer};
+    answers = tempAnswers.map((answer) => Answer(answer, answer == correctAnswer)).toList();
   }
 }

@@ -11,6 +11,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     required this.category,
   }) : super(GameLoadInProgress(category: category)) {
     on<GameQuestionsRequestedEvent>(_onGameQuestionsRequested);
+    on<AnswerSelect>(_onSelectAnswer);
+    on<AnswerUnselect>(_onUnselectAnswer);
     on<GameValidateAnswerEvent>(_onGameValidateAnswerEvent);
     on<GameSubmitAnswerEvent>(_onGameSubmitAnswerEvent);
     add(GameQuestionsRequestedEvent(category: category));
@@ -32,13 +34,30 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     }
   }
 
+  void _onSelectAnswer(
+      AnswerSelect event,
+      Emitter<GameState> emit,
+  ) {
+    final currentState = state as GameLoadSuccess;
+    emit(currentState.copyWith(selectedAnswer: event.answer));
+  }
+
+  void _onUnselectAnswer(
+      AnswerUnselect event,
+      Emitter<GameState> emit,
+  ) {
+    final currentState = state as GameLoadSuccess;
+    emit(currentState.copyWith(selectedAnswer: null));
+  }
+
   void _onGameValidateAnswerEvent(
     GameValidateAnswerEvent event,
     Emitter<GameState> emit,
   ) {
     final currentState = state as GameLoadSuccess;
     final currentScore = currentState.score;
-    emit(currentState.copyWith(score: event.correctAnswer ? currentScore + 1 : currentScore, revealAnswer: true));
+    final correctAnswer = currentState.selectedAnswer!.isCorrect;
+    emit(currentState.copyWith(score: correctAnswer ? currentScore + 1 : currentScore, revealAnswer: true));
   }
 
   void _onGameSubmitAnswerEvent(
@@ -50,7 +69,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     if (currentQuestionIndex + 1 == currentState.questions.length) {
       emit(GameEnded(category: category, score: currentState.score));
     } else {
-      emit(currentState.copyWith(questionIndex: currentQuestionIndex + 1, revealAnswer: false));
+      emit(currentState.copyWith(questionIndex: currentQuestionIndex + 1, revealAnswer: false, selectedAnswer: null));
     }
   }
 }
