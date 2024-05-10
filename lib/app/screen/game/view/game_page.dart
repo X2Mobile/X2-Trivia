@@ -109,7 +109,7 @@ class _GamePageViewState extends State<GamePageView> {
                         curve: Curves.easeInOut,
                         tween: Tween<double>(
                           begin: 0,
-                          end: (questionIndex + (revealAnswer ? 1 : 0)) / questions.length,
+                          end: (questionIndex + 1) / questions.length,
                         ),
                         builder: (context, value, _) => LinearProgressIndicator(value: value),
                       ),
