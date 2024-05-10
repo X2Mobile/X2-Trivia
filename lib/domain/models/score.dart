@@ -13,6 +13,13 @@ final class Score {
     required this.date,
   });
 
+  Score.fromJson(Map<String, dynamic> json)
+      : email = json['email'],
+        name = json['name'],
+        categoryId = json['categoryId'],
+        score =json['score'],
+        date = json['date'].toDate();
+
   toJson() {
     return {
       'email': email,
