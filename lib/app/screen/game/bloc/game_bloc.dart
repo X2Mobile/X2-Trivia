@@ -56,8 +56,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   ) {
     final currentState = state as GameInProgress;
     final currentScore = currentState.score;
+    final selectedAnswer = currentState.selectedAnswer;
     final correctAnswer = currentState.selectedAnswer!.isCorrect;
-    emit(currentState.copyWith(score: correctAnswer ? currentScore + 1 : currentScore, revealAnswer: true));
+    emit(currentState.copyWith(score: correctAnswer ? currentScore + 1 : currentScore, revealAnswer: true, selectedAnswer: selectedAnswer));
   }
 
   void _onGameSubmitAnswerEvent(
