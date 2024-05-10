@@ -151,11 +151,11 @@ class _GamePageViewState extends State<GamePageView> {
                         child: SizedBox(
                           width: double.infinity,
                           child: FilledButton(
-                            onPressed: selectedAnswer != null
-                                ? _onValidateAnswer
-                                : revealAnswer
-                                    ? _onSubmitAnswer
-                                    : null,
+                            onPressed: revealAnswer
+                                ? _onSubmitAnswer
+                                : selectedAnswer != null
+                                  ? _onValidateAnswer
+                                  : null,
                             child: revealAnswer
                                 ? questionIndex + 1 == questions.length
                                     ? Text(context.strings.finish)
