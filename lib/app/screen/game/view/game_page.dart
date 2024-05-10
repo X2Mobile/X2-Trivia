@@ -13,26 +13,31 @@ import 'package:x2trivia/domain/models/question.dart';
 import 'package:x2trivia/domain/repositories/questions_repository.dart';
 
 class GamePage extends StatelessWidget {
-  const GamePage({super.key});
+  const GamePage({super.key, required this.category});
 
   static Route<void> route({required Category category}) => MaterialPageRoute(
-        builder: (context) => BlocProvider(
-          create: (context) => GameBloc(
-            questionsRepository: context.read<QuestionsRepository>(),
-            category: category,
-          ),
-          child: const GamePageView(),
-        ),
-      );
+      builder: (context) => GamePage(
+          category: category
+      ));
+
+  final Category category;
 
   @override
   Widget build(BuildContext context) {
-    return const GamePageView();
+    return BlocProvider(
+      create: (context) => GameBloc(
+        questionsRepository: context.read<QuestionsRepository>(),
+        category: category,
+      ),
+      child: GamePageView(category: category),
+    );
   }
 }
 
 class GamePageView extends StatefulWidget {
-  const GamePageView({super.key});
+  const GamePageView({super.key, required this.category});
+
+  final Category category;
 
   @override
   State<GamePageView> createState() => _GamePageViewState();
@@ -40,11 +45,13 @@ class GamePageView extends StatefulWidget {
 
 class _GamePageViewState extends State<GamePageView> {
   late final GameBloc gameBloc;
+  late final Category _category;
 
   @override
   void initState() {
     super.initState();
     gameBloc = context.read<GameBloc>();
+    _category = widget.category;
   }
 
   void _onEndGame() async {
@@ -82,11 +89,7 @@ class _GamePageViewState extends State<GamePageView> {
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            title: BlocBuilder<GameBloc, GameState>(
-              builder: (_, state) {
-                return Text(state.category.name);
-              },
-            ),
+            title: Text(_category.name),
             leading: CloseButton(onPressed: () => _onEndGame()),
           ),
           body: BlocBuilder<GameBloc, GameState>(
