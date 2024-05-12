@@ -21,7 +21,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     SignOutEvent event,
     Emitter<HomeState> emit,
   ) async {
-    // await _userRepository.logoutUser();
+    await _userRepository.logoutUser();
     emit(state.copyWith(
       user: null,
     ));

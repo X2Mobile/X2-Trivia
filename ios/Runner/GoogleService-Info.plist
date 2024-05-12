@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyCkTNozVw5SbtuoOwqJRehefVzIqq2ddnQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>640972954170</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.x2mobile.trivia.x2trivia</string>
+	<key>PROJECT_ID</key>
+	<string>x2-trivia</string>
+	<key>STORAGE_BUCKET</key>
+	<string>x2-trivia.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:640972954170:ios:a51b6aadef32d36426f303</string>
+</dict>
+</plist>
