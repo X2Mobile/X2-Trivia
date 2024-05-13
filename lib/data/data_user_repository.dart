@@ -22,8 +22,7 @@ final class DataUserRepository<T> extends UserRepository {
   @override
   Stream<User> loginUser(String email, String password) async* {
     try {
-      var credentials = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+      var credentials = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       yield credentials.user!;
     } catch (error) {
       if (error is FirebaseAuthException) {
@@ -50,13 +49,9 @@ final class DataUserRepository<T> extends UserRepository {
   @override
   Stream<User> createUser(String? name, String email, String password) async* {
     try {
-      var credentials = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+      var credentials = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
       var user = credentials.user!;
-      yield* user
-          .updateDisplayName(name)
-          .then((value) => FirebaseAuth.instance.currentUser!)
-          .asStream();
+      yield* user.updateDisplayName(name).then((value) => FirebaseAuth.instance.currentUser!).asStream();
     } catch (error) {
       if (error is FirebaseAuthException) {
         throw AuthenticationException.firebase(error.message);

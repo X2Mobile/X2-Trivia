@@ -60,10 +60,10 @@ class _LoginPageViewState extends State<LoginPageView> {
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
-          if (state is SuccessLoginState) {
+          if (state is LoginSuccessState) {
             Navigator.of(context, rootNavigator: true).pushReplacement(HomePage.route(user: state.user.displayName));
           }
-          if (state is ErrorLoginState) {
+          if (state is LoginErrorState) {
             Fluttertoast.showToast(
               msg: state.exception.getMessage(context),
               toastLength: Toast.LENGTH_SHORT,
@@ -109,7 +109,7 @@ class _LoginPageViewState extends State<LoginPageView> {
                 ),
                 BlocBuilder<LoginBloc, LoginState>(
                   builder: (_, state) {
-                    if (state.loading == true) {
+                    if (state is LoginLoadingState) {
                       return const LinearProgressIndicator(
                         value: null,
                       );
