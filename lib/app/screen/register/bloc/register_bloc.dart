@@ -12,6 +12,7 @@ final class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   })  : _userRepository = userRepository,
         super(const RegisterState()) {
     on<Register>(_onRegister);
+    on<RegisterObscureText>(_onObscureText);
   }
 
   final UserRepository _userRepository;
@@ -26,8 +27,14 @@ final class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       onData: (newUser) => RegisterSuccessState.fromState(state, newUser),
       onError: (error, stackTrace) {
         AuthenticationException exception = AuthenticationException.firebase(error.toString());
-        return RegisterErrorState(exception: exception);
+        return RegisterErrorState.fromState(state, exception);
       },
     );
   }
+
+  Future<void> _onObscureText(
+    RegisterObscureText event,
+    Emitter<RegisterState> emit,
+  ) async =>
+      emit(RegisterState(isPasswordVisible: !state.isPasswordVisible));
 }

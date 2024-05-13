@@ -33,6 +33,8 @@ final class RegisterErrorState extends RegisterState {
 
   final AuthenticationException exception;
 
+  RegisterErrorState.fromState(RegisterState state, this.exception) : super(isPasswordVisible: state.isPasswordVisible);
+
   @override
   List<Object> get props => [exception];
 }
