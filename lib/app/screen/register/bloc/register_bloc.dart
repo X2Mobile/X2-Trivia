@@ -23,7 +23,7 @@ final class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     emit(const RegisterLoadingState());
     await emit.forEach<User>(
       _userRepository.createUser(event.name, event.email, event.password),
-      onData: (newUser) => RegisterSuccessState(user: newUser),
+      onData: (newUser) => RegisterSuccessState.fromState(state, newUser),
       onError: (error, stackTrace) {
         AuthenticationException exception = AuthenticationException.firebase(error.toString());
         return RegisterErrorState(exception: exception);
