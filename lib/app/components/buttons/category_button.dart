@@ -21,9 +21,6 @@ class CategoryButton extends StatelessWidget {
             onPressed: onPressed,
             child: Text(category.name),
           )
-        : TextButton(
-            onPressed: onPressed,
-            child: Text(category.name)
-          );
+        : TextButton(onPressed: onPressed, child: Text(category.name));
   }
 }

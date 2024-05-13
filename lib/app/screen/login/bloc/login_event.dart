@@ -19,3 +19,10 @@ final class Login extends LoginEvent {
   @override
   List<Object> get props => [email, password];
 }
+
+final class LoginObscureText extends LoginEvent {
+  const LoginObscureText();
+
+  @override
+  List<Object> get props => [];
+}

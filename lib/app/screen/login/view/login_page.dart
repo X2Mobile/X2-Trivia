@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:x2trivia/app/components/buttons/input_text_field.dart';
 import 'package:x2trivia/app/screen/login/bloc/login_event.dart';
 import 'package:x2trivia/app/screen/login/bloc/login_state.dart';
 import 'package:x2trivia/app/util/build_context_helper.dart';
@@ -50,12 +49,14 @@ class _LoginPageViewState extends State<LoginPageView> {
 
   void _onLogIn(String email, String password) => loginBloc.add(Login(email: email, password: password));
 
+  void _onObscureTextTap() => loginBloc.add(const LoginObscureText());
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state is LoginSuccessState) {
-          Navigator.of(context, rootNavigator: true).pushReplacement(HomePage.route(user: state.user.displayName));
+          Navigator.of(context, rootNavigator: true).pushReplacement(HomePage.route(userDisplayName: state.user.displayName));
         }
         if (state is LoginErrorState) {
           Fluttertoast.showToast(
@@ -90,21 +91,30 @@ class _LoginPageViewState extends State<LoginPageView> {
   List<Widget> loginForm() => [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: InputTextField(
+          child: TextField(
             controller: _emailController,
-            label: context.strings.email,
-            hint: context.strings.email,
-            isPassword: false,
+            decoration: InputDecoration(
+              labelText: context.strings.email,
+            ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: InputTextField(
-            controller: _passwordController,
-            label: context.strings.password,
-            hint: context.strings.password,
-            isPassword: true,
-          ),
+        BlocBuilder<LoginBloc, LoginState>(
+          builder: (_, state) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: TextFormField(
+                controller: _passwordController,
+                obscureText: !state.isPasswordVisible,
+                decoration: InputDecoration(
+                  labelText: context.strings.password,
+                  suffixIcon: IconButton(
+                    icon: Icon(state.isPasswordVisible ? Icons.visibility : Icons.visibility_off),
+                    onPressed: _onObscureTextTap,
+                  ),
+                ),
+              ),
+            );
+          },
         ),
         BlocBuilder<LoginBloc, LoginState>(
           builder: (_, state) {
