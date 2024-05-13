@@ -16,11 +16,18 @@ class InputTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-        obscureText: isPassword,
-        enableSuggestions: !isPassword,
-        autocorrect: !isPassword,
-        decoration: InputDecoration(border: const OutlineInputBorder(), hintText: hint),
-        controller: controller);
+    return TextFormField(
+      obscureText: isPassword,
+      enableSuggestions: !isPassword,
+      autocorrect: !isPassword,
+      decoration: InputDecoration(
+        labelText: hint,
+        // suffixIcon: IconButton(
+        //   icon: Icon(isPasswordVisible ? Icons.visibility : Icons.visibility_off),
+        //   onPressed: () {},
+        // ),
+      ),
+      controller: controller,
+    );
   }
 }
