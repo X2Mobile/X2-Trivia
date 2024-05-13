@@ -54,7 +54,7 @@ class _ScorePageViewState extends State<ScorePageView> {
   }
 
   void _onSaveScore() {
-    _scoreBloc.add(const SaveScoreEvent());
+    _scoreBloc.add(const ScoreSave());
   }
 
   @override
