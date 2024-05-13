@@ -9,8 +9,8 @@ sealed class GameEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class GameQuestionsRequestedEvent extends GameEvent {
-  const GameQuestionsRequestedEvent({
+final class GameQuestionsRequested extends GameEvent {
+  const GameQuestionsRequested({
     required this.category,
   });
 
@@ -20,8 +20,8 @@ final class GameQuestionsRequestedEvent extends GameEvent {
   List<Object> get props => [category];
 }
 
-final class AnswerSelect extends GameEvent {
-  const AnswerSelect({
+final class GameAnswerSelect extends GameEvent {
+  const GameAnswerSelect({
     required this.answer,
   });
 
@@ -31,8 +31,8 @@ final class AnswerSelect extends GameEvent {
   List<Object> get props => [answer];
 }
 
-final class AnswerUnselect extends GameEvent {
-  const AnswerUnselect();
+final class GameAnswerUnselect extends GameEvent {
+  const GameAnswerUnselect();
 
   @override
   List<Object> get props => [];

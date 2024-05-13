@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:x2trivia/data/utils/constants.dart';
 import 'package:x2trivia/domain/models/category.dart';
 import 'package:x2trivia/domain/models/question.dart';
 import 'package:x2trivia/domain/repositories/questions_repository.dart';
@@ -8,8 +9,8 @@ class DataQuestionsRepository extends QuestionsRepository {
   @override
   Future<List<Question>> getQuestions(Category category) async {
     final url = category.id == -1
-        ? Uri.parse('https://opentdb.com/api.php?amount=10')
-        : Uri.parse('https://opentdb.com/api.php?amount=10&category=${category.id}');
+        ? Uri.parse(Constants.serverUrl)
+        : Uri.parse('${Constants.serverUrl}&category=${category.id}');
 
     try {
       final response = await http.get(url);

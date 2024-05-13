@@ -61,9 +61,9 @@ class _GamePageViewState extends State<GamePageView> {
     );
   }
 
-  void _onAnswerSelected(Answer answer) => gameBloc.add(AnswerSelect(answer: answer));
+  void _onAnswerSelected(Answer answer) => gameBloc.add(GameAnswerSelect(answer: answer));
 
-  void _onAnswerUnselected() => gameBloc.add(const AnswerUnselect());
+  void _onAnswerUnselected() => gameBloc.add(const GameAnswerUnselect());
 
   void _onValidateAnswer() => gameBloc.add(const GameValidateAnswerEvent());
 
@@ -90,97 +90,99 @@ class _GamePageViewState extends State<GamePageView> {
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             title: Text(_category.name),
-            leading: CloseButton(onPressed: () => _onEndGame()),
+            leading: CloseButton(onPressed: _onEndGame),
           ),
-          body: BlocBuilder<GameBloc, GameState>(
-            builder: (_, state) {
-              if (state is GameInProgress) {
-                int score = state.score;
-                List<Question> questions = state.questions;
-                int questionIndex = state.questionIndex;
-                List<Answer> answers = questions[questionIndex].answers;
-                bool revealAnswer = state.revealAnswer;
-                Answer? selectedAnswer = state.selectedAnswer;
-
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      Text("${questionIndex + 1} / ${questions.length}"),
-                      TweenAnimationBuilder<double>(
-                        duration: const Duration(milliseconds: 250),
-                        curve: Curves.easeInOut,
-                        tween: Tween<double>(
-                          begin: 0,
-                          end: (questionIndex + 1) / questions.length,
-                        ),
-                        builder: (context, value, _) => LinearProgressIndicator(value: value),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Text(context.strings.currentScore + score.toString()),
-                      ),
-                      Text(
-                        questions[questionIndex].question,
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                      Flexible(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: questions[questionIndex].answers.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            Answer answer = answers[index];
-                            return SizedBox(
-                                width: double.infinity,
-                                child: Padding(
-                                    padding: const EdgeInsets.only(top: 8, bottom: 8),
-                                    child: AnswerButton(
-                                      answer: answer,
-                                      isSelected: answer == selectedAnswer,
-                                      isRevealed: revealAnswer,
-                                      onPressed: revealAnswer ? null : () => selectedAnswer == answer ? _onAnswerUnselected() : _onAnswerSelected(answer),
-                                    ),
-                                ),
-                            );
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16),
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: FilledButton(
-                            onPressed: revealAnswer
-                                ? _onSubmitAnswer
-                                : selectedAnswer != null
-                                  ? _onValidateAnswer
-                                  : null,
-                            child: revealAnswer
-                                ? questionIndex + 1 == questions.length
-                                    ? Text(context.strings.finish)
-                                    : Text(context.strings.next)
-                                : Text(context.strings.submit),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                );
-              } else if (state is GameLoadInProgress) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                return const SizedBox.shrink();
-              }
-            },
-          ),
+          body: content(context)
         ),
       ),
     );
   }
+
+  Widget content(BuildContext context) => BlocBuilder<GameBloc, GameState>(
+    builder: (_, state) {
+      if (state is GameInProgress) {
+        int score = state.score;
+        List<Question> questions = state.questions;
+        int questionIndex = state.questionIndex;
+        List<Answer> answers = questions[questionIndex].answers;
+        bool revealAnswer = state.revealAnswer;
+        Answer? selectedAnswer = state.selectedAnswer;
+
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Text("${questionIndex + 1} / ${questions.length}"),
+              TweenAnimationBuilder<double>(
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeInOut,
+                tween: Tween<double>(
+                  begin: 0,
+                  end: (questionIndex + 1) / questions.length,
+                ),
+                builder: (context, value, _) => LinearProgressIndicator(value: value),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Text(context.strings.currentScore + score.toString()),
+              ),
+              Text(
+                questions[questionIndex].question,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              Flexible(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: questions[questionIndex].answers.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    Answer answer = answers[index];
+                    return SizedBox(
+                      width: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8, bottom: 8),
+                        child: AnswerButton(
+                          answer: answer,
+                          isSelected: answer == selectedAnswer,
+                          isRevealed: revealAnswer,
+                          onPressed: revealAnswer ? null : () => selectedAnswer == answer ? _onAnswerUnselected() : _onAnswerSelected(answer),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    onPressed: revealAnswer
+                        ? _onSubmitAnswer
+                        : selectedAnswer != null
+                          ? _onValidateAnswer
+                          : null,
+                    child: revealAnswer
+                        ? questionIndex + 1 == questions.length
+                          ? Text(context.strings.finish)
+                          : Text(context.strings.next)
+                        : Text(context.strings.submit),
+                  ),
+                ),
+              )
+            ],
+          ),
+        );
+      } else if (state is GameLoadInProgress) {
+        return const Center(child: CircularProgressIndicator());
+      } else {
+        return const SizedBox.shrink();
+      }
+    },
+  );
 
   Widget endGameConfirmation(BuildContext context) {
     return AlertDialog(

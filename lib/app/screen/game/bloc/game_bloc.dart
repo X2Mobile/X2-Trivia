@@ -10,19 +10,21 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     required this.questionsRepository,
     required this.category,
   }) : super(GameLoadInProgress(category: category)) {
-    on<GameQuestionsRequestedEvent>(_onGameQuestionsRequested);
-    on<AnswerSelect>(_onSelectAnswer);
-    on<AnswerUnselect>(_onUnselectAnswer);
+    on<GameQuestionsRequested>(_onGameQuestionsRequested);
+    on<GameAnswerSelect>(_onSelectAnswer);
+    on<GameAnswerUnselect>(_onUnselectAnswer);
     on<GameValidateAnswerEvent>(_onGameValidateAnswerEvent);
     on<GameSubmitAnswerEvent>(_onGameSubmitAnswerEvent);
-    add(GameQuestionsRequestedEvent(category: category));
+    add(GameQuestionsRequested(category: category));
   }
 
   final QuestionsRepository questionsRepository;
   final Category category;
 
+  bool isLastQuestion(GameInProgress currentState) => currentState.questionIndex + 1 == currentState.questions.length;
+
   Future<void> _onGameQuestionsRequested(
-    GameQuestionsRequestedEvent event,
+    GameQuestionsRequested event,
     Emitter<GameState> emit,
   ) async {
     try {
@@ -35,7 +37,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   void _onSelectAnswer(
-      AnswerSelect event,
+      GameAnswerSelect event,
       Emitter<GameState> emit,
   ) {
     final currentState = state as GameInProgress;
@@ -43,7 +45,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   void _onUnselectAnswer(
-      AnswerUnselect event,
+      GameAnswerUnselect event,
       Emitter<GameState> emit,
   ) {
     final currentState = state as GameInProgress;
@@ -66,11 +68,10 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     Emitter<GameState> emit,
   ) {
     final currentState = state as GameInProgress;
-    final currentQuestionIndex = currentState.questionIndex;
-    if (currentQuestionIndex + 1 == currentState.questions.length) {
+    if (isLastQuestion(currentState)) {
       emit(GameEnded(category: category, score: currentState.score));
     } else {
-      emit(currentState.copyWith(questionIndex: currentQuestionIndex + 1, revealAnswer: false, selectedAnswer: null));
+      emit(currentState.copyWith(questionIndex: currentState.questionIndex + 1, revealAnswer: false, selectedAnswer: null));
     }
   }
 }
