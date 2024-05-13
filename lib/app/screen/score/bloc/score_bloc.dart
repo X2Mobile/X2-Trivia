@@ -13,14 +13,14 @@ class ScoreBloc extends Bloc<ScoreEvent, ScoreState> {
     required category,
     required score,
   }) : super(ScoreInitial(score, category)) {
-    on<SaveScoreEvent>(_onSaveScore);
+    on<ScoreSave>(_onSaveScore);
   }
 
   final UserRepository userRepository;
   final ScoreRepository scoreRepository;
 
   Future<void> _onSaveScore(
-    SaveScoreEvent event,
+    ScoreSave event,
     Emitter<ScoreState> emit,
   ) async {
     emit(ScoreLoadInProgress.fromState(state));

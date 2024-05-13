@@ -21,18 +21,17 @@ void bootstrap() {
 
   // TODO add repositories
   final userRepository = DataUserRepository();
-  final firestoreRepository = DataScoreRepository();
+  final scoreRepository = DataScoreRepository();
   final questionsRepository = DataQuestionsRepository();
 
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
 
-    await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
     runApp(TriviaApp(
       userRepository,
-      firestoreRepository,
+      scoreRepository,
       questionsRepository,
     ));
   }, (error, stackTrace) {

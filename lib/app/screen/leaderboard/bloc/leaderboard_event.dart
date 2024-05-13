@@ -8,8 +8,8 @@ sealed class LeaderboardEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class LeaderboardRequestedEvent extends LeaderboardEvent {
-  const LeaderboardRequestedEvent();
+final class LeaderboardRequested extends LeaderboardEvent {
+  const LeaderboardRequested();
 
   @override
   List<Object> get props => [];

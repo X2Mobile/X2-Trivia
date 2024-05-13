@@ -7,6 +7,6 @@ sealed class ScoreEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class SaveScoreEvent extends ScoreEvent {
-  const SaveScoreEvent();
+final class ScoreSave extends ScoreEvent {
+  const ScoreSave();
 }
