@@ -109,30 +109,18 @@ class _LeaderboardPageViewState extends State<LeaderboardPageView> {
         itemBuilder: (BuildContext context, int index) {
           return Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: getCircleAvatarColor(index + 1),
-                      child: Text((index + 1).toString()),
-                    ),
-                    Expanded(
-                        child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(entries[index].name),
-                    )),
-                    Text(
-                      entries[index].averageScore.toStringAsFixed(2),
-                      style: Theme.of(context).textTheme.labelSmall,
-                    ),
-                  ],
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: getCircleAvatarColor(index + 1),
+                  child: Text((index + 1).toString()),
                 ),
+                trailing: Text(
+                  entries[index].averageScore.toStringAsFixed(2),
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                title: Text(entries[index].name),
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 16),
-                child: Divider(height: 1),
-              )
+              const Divider(indent: 16),
             ],
           );
         });
