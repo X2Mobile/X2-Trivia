@@ -21,3 +21,10 @@ final class Register extends RegisterEvent {
   @override
   List<Object> get props => [email, password];
 }
+
+final class RegisterObscureText extends RegisterEvent {
+  const RegisterObscureText();
+
+  @override
+  List<Object> get props => [];
+}

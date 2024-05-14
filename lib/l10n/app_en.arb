@@ -1,14 +1,15 @@
 {
-  "helloWorld": "Hello World!",
+  "x2Trivia": "X2 Trivia",
+
   "login": "Login",
   "email": "Email",
   "password": "Password",
   "name": "Name",
-  "register": "Register",
-  "x2Trivia": "X2 Trivia",
-  "loginPage": "Login To X2 Trivia",
+
+  "registerMessage" : "Don't have an account yet?",
+  "createAccount" : "Create account",
+
   "signedIn": "Signed in as ",
-  "homePage": "Home Page",
   "selectCategory": "Select category",
   "startGame": "Start game",
   "game": "Game",
@@ -19,14 +20,18 @@
   "endGameConfirmation": "Are you sure you want to end the game?",
   "endGame": "End game",
   "leaderboard": "Leaderboard",
+
   "rank": "Rank",
   "averageScore": "Average score",
   "categoryTitle": "Category",
   "date": "Date",
+
   "newGame": "New game",
   "signOutConfirmation": "Are you sure you want to sign out?",
   "signOut": "Sign out",
+
   "cancel": "Cancel",
+
   "unknownLoginError": "An unknown error occurred while trying to log in.",
   "category": "Category: ",
   "score": "Score: ",
