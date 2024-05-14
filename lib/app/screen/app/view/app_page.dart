@@ -9,8 +9,6 @@ import 'package:x2trivia/domain/repositories/questions_repository.dart';
 import 'package:x2trivia/domain/repositories/score_repository.dart';
 import 'package:x2trivia/domain/repositories/user_repository.dart';
 
-import '../../home/view/home_page.dart';
-import '../../login/view/login_page.dart';
 import '../bloc/app_bloc.dart';
 import '../bloc/app_state.dart';
 
