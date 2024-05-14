@@ -136,7 +136,7 @@ class _LoginPageViewState extends State<LoginPageView> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top:60.0, bottom: 16),
+            padding: const EdgeInsets.only(top: 60.0, bottom: 16),
             child: Text(context.strings.registerMessage),
           ),
           Row(

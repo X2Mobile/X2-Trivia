@@ -87,15 +87,7 @@ class _RegisterPageViewState extends State<RegisterPageView> {
     );
   }
 
-  PreferredSizeWidget appBar() => AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-    title: Text(context.strings.createAccount),
-      );
+  PreferredSizeWidget appBar() => AppBar(title: Text(context.strings.createAccount));
 
   Widget headerImage() => Padding(
         padding: const EdgeInsets.only(top: 120, bottom: 60),
