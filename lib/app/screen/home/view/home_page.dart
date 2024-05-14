@@ -15,11 +15,11 @@ class HomePage extends StatelessWidget {
 
   final String? displayName;
 
-  static Route<void> route({String? user}) => MaterialPageRoute(
+  static Route<void> route({String? userDisplayName}) => MaterialPageRoute(
         builder: (context) => BlocProvider(
           create: (BuildContext context) => HomeBloc(
             userRepository: context.read<UserRepository>(),
-            user: user,
+            userDisplayName: userDisplayName,
           ),
           child: const HomePageView(),
         ),
@@ -30,7 +30,7 @@ class HomePage extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) => HomeBloc(
         userRepository: context.read<UserRepository>(),
-        user: displayName,
+        userDisplayName: displayName,
       ),
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (_, state) {
@@ -72,66 +72,66 @@ class _HomePageViewState extends State<HomePageView> {
   @override
   Widget build(BuildContext context) {
     HomeState state = context.watch<HomeBloc>().state;
-    String username = state.user.toString();
+    String username = state.userDisplayName.toString();
 
     return Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              context.strings.x2Trivia,
+              style: TextStyle(
+                fontSize: 42,
+                color: Theme.of(context).colorScheme.primary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: () => Navigator.of(context, rootNavigator: true).push(CategoriesPage.route()),
+                child: Text(context.strings.startGame),
+              ),
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton(
+                onPressed: () => Navigator.of(context, rootNavigator: true).push(LeaderboardPage.route()),
+                child: Text(context.strings.leaderboard),
+              ),
+            ),
+            Row(
               mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  context.strings.x2Trivia,
-                  style: TextStyle(
-                    fontSize: 42,
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                      onPressed: () => Navigator.of(context, rootNavigator: true).push(CategoriesPage.route()),
-                      child: Text(context.strings.startGame)
-                  ),
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton(
-                      onPressed: () => Navigator.of(context, rootNavigator: true).push(LeaderboardPage.route()),
-                      child: Text(context.strings.leaderboard)
-                  ),
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Text(context.strings.signedIn),
-                          Expanded(
-                            child: Text(
-                              username,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                            ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Text(context.strings.signedIn),
+                      Expanded(
+                        child: Text(
+                          username,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                    TextButton(
-                      onPressed: () => _onSignOut(),
-                      child: Text(context.strings.signOut),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ]
-          ),
-        )
+                TextButton(
+                  onPressed: () => _onSignOut(),
+                  child: Text(context.strings.signOut),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 

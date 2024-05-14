@@ -72,9 +72,7 @@ class _CategoriesPageViewState extends State<CategoriesPageView> {
                   return CategoryButton(
                     category: category,
                     isSelected: selectedCategory != null && selectedCategory.id == category.id,
-                    onPressed: () => selectedCategory == category
-                        ? _onCategoryUnselected()
-                        : _onCategorySelected(category),
+                    onPressed: () => selectedCategory == category ? _onCategoryUnselected() : _onCategorySelected(category),
                   );
                 },
               ),
@@ -82,9 +80,8 @@ class _CategoriesPageViewState extends State<CategoriesPageView> {
             SizedBox(
               width: double.infinity,
               child: FilledButton(
-                  onPressed: selectedCategory != null
-                      ? () => Navigator.of(context, rootNavigator: true).push(GamePage.route(category: selectedCategory))
-                      : null,
+                  onPressed:
+                      selectedCategory != null ? () => Navigator.of(context, rootNavigator: true).push(GamePage.route(category: selectedCategory)) : null,
                   child: Text(context.strings.startGame)),
             ),
           ],

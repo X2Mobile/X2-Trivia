@@ -12,7 +12,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   })  : _userRepository = userRepository,
         super(const LoginState()) {
     on<Login>(_onLogin);
-    on<Register>(_onRegister);
+    on<LoginObscureText>(_onObscureText);
   }
 
   final UserRepository _userRepository;
@@ -21,31 +21,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     Login event,
     Emitter<LoginState> emit,
   ) async {
-    emit(const LoginLoadingState());
+    emit(LoginLoadingState.fromState(state));
     await emit.forEach<User>(
       _userRepository.loginUser(event.email, event.password),
       onData: (newUser) {
-        return LoginSuccessState(user: newUser);
+        return LoginSuccessState.fromState(state, newUser);
       },
       onError: (error, stackTrace) {
         AuthenticationException exception = error as AuthenticationException;
-        return LoginErrorState(exception: exception);
+        return LoginErrorState.fromState(state, exception);
       },
     );
   }
 
-  Future<void> _onRegister(
-    Register event,
+  Future<void> _onObscureText(
+    LoginObscureText event,
     Emitter<LoginState> emit,
-  ) async {
-    emit(const LoginLoadingState());
-    await emit.forEach<User>(
-      _userRepository.createUser(event.name, event.email, event.password),
-      onData: (newUser) => LoginSuccessState(user: newUser),
-      onError: (error, stackTrace) {
-        AuthenticationException exception = AuthenticationException.firebase(error.toString());
-        return LoginErrorState(exception: exception);
-      },
-    );
-  }
+  ) async =>
+      emit(LoginState(isPasswordVisible: !state.isPasswordVisible));
 }

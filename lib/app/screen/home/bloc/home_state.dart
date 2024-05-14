@@ -2,15 +2,15 @@ import 'package:equatable/equatable.dart';
 
 class HomeState extends Equatable {
   const HomeState({
-    this.user,
+    this.userDisplayName,
   });
 
-  final String? user;
+  final String? userDisplayName;
 
   HomeState copyWith({String? user}) => HomeState(
-        user: user,
+        userDisplayName: user,
       );
 
   @override
-  List<Object?> get props => [user];
+  List<Object?> get props => [userDisplayName];
 }
