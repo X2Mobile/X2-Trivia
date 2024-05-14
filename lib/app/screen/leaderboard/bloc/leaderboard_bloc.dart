@@ -12,8 +12,6 @@ class LeaderboardBloc extends Bloc<LeaderboardEvent, LeaderboardState> {
     required this.scoreRepository,
   }) : super(const LeaderboardLoadInProgress()) {
     on<LeaderboardRequested>(_onLeaderboardRequested);
-    on<LeaderboardSort>(_onSort);
-    on<LeaderboardCategorySelect>(_onSelectCategory);
     add(const LeaderboardRequested());
   }
 
@@ -27,24 +25,9 @@ class LeaderboardBloc extends Bloc<LeaderboardEvent, LeaderboardState> {
       final List<Score> scores = await scoreRepository.getScores(DateTime.now().subtract(Duration(days: DateTime.now().weekday + 6)), DateTime.now());
 
       emit(LeaderboardLoadSuccess(entries: extractLeaderboardEntries(scores), selectedCategory: Constants.categories.first));
-      add(const LeaderboardSort(sortAscending: false));
     } catch (error) {
       emit(LeaderboardLoadError(exception: error.toString()));
     }
-  }
-
-  void _onSort(
-    LeaderboardSort event,
-    Emitter<LeaderboardState> emit,
-  ) {
-    emit((state as LeaderboardLoadSuccess).copyWith(sortAscending: event.sortAscending));
-  }
-
-  void _onSelectCategory(
-    LeaderboardCategorySelect event,
-    Emitter<LeaderboardState> emit,
-  ) {
-    emit((state as LeaderboardLoadSuccess).copyWith(category: event.category));
   }
 
   List<LeaderboardEntry> extractLeaderboardEntries(List<Score> scores) {

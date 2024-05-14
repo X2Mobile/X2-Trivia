@@ -13,21 +13,13 @@ class LeaderboardLoadSuccess extends LeaderboardState {
   const LeaderboardLoadSuccess({
     required this.entries,
     this.selectedCategory,
-    this.sortAscending = false,
   });
 
-  final bool sortAscending;
   final List<LeaderboardEntry> entries;
   final Category? selectedCategory;
 
-  LeaderboardLoadSuccess copyWith({
-    bool? sortAscending,
-    List<LeaderboardEntry>? entries,
-    Category? category,
-  }) => LeaderboardLoadSuccess(entries: entries ?? this.entries, selectedCategory: category ?? selectedCategory, sortAscending: sortAscending ?? this.sortAscending);
-
   @override
-  List<Object?> get props => [entries, selectedCategory, sortAscending];
+  List<Object?> get props => [entries, selectedCategory];
 }
 
 class LeaderboardLoadError extends LeaderboardState {

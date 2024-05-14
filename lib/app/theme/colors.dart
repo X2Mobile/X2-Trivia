@@ -8,4 +8,9 @@ final class X2TriviaColors {
   static const surfaceGray = Color(0xfffbf8fd);
   static const outlineGray = Color(0xffc7c6d0);
   static const onPrimaryContainerBlue = Color(0xff000f5d);
+
+  static const leaderboard1st = Color(0xfff2d080);
+  static const leaderboard2nd = Color(0xffdedede);
+  static const leaderboard3rd = Color(0xfff3b88c);
+  static const leaderboardOthers = Color(0xffdee0ff);
 }
