@@ -6,8 +6,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:x2trivia/app/screen/app/view/app_page.dart';
-import 'package:x2trivia/data/data_score_repository.dart';
+import 'package:x2trivia/data/data_questions_repository.dart';
 import 'package:x2trivia/data/data_user_repository.dart';
+import 'package:x2trivia/data/data_score_repository.dart';
 
 import 'app/theme/theme.dart';
 import 'app/util/app_bloc_observer.dart';
@@ -22,6 +23,7 @@ void bootstrap() {
 
   final userRepository = DataUserRepository();
   final scoreRepository = DataScoreRepository();
+  final questionsRepository = DataQuestionsRepository();
 
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +35,7 @@ void bootstrap() {
     runApp(TriviaApp(
       userRepository,
       scoreRepository,
+      questionsRepository,
     ));
   }, (error, stackTrace) {
     log('runZonedGuarded: Caught error', error: error, stackTrace: stackTrace);
