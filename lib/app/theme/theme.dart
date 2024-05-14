@@ -19,6 +19,11 @@ final class X2TriviaTheme {
       buttonColor: X2TriviaColors.blue,
       textTheme: ButtonTextTheme.primary,
     ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: X2TriviaColors.blue,
+      ),
+    ),
     inputDecorationTheme: const InputDecorationTheme(filled: true, border: OutlineInputBorder(), fillColor: X2TriviaColors.lightGray),
   );
 
