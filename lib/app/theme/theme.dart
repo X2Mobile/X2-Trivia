@@ -8,6 +8,11 @@ final class X2TriviaTheme {
     colorScheme: const ColorScheme.light(
       brightness: Brightness.light,
       primary: X2TriviaColors.blue,
+      secondaryContainer: X2TriviaColors.tonalBlue,
+      surfaceVariant: X2TriviaColors.lightGray,
+      surface: X2TriviaColors.surfaceGray,
+      outlineVariant: X2TriviaColors.outlineGray,
+      onPrimaryContainer: X2TriviaColors.onPrimaryContainerBlue,
     ),
     filledButtonTheme: const FilledButtonThemeData(),
     buttonTheme: const ButtonThemeData(
