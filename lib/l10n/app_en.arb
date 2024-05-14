@@ -27,6 +27,8 @@
   "cancel": "Cancel",
   "unknownLoginError": "An unknown error occurred while trying to log in.",
   "category": "Category: ",
-  "score": "Score: ",
-  "save": "Save"
+  "finalScore": "Final score: ",
+  "scoreSaved": "Score saved",
+  "exit": "Exit to Homescreen",
+  "save": "Save score to Leaderboard"
 }
