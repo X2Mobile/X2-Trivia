@@ -1,19 +1,23 @@
 {
-  "helloWorld": "Hello World!",
+  "x2Trivia": "X2 Trivia",
+
   "login": "Login",
   "email": "Email",
   "password": "Password",
   "name": "Name",
-  "register": "Register",
-  "x2Trivia": "X2 Trivia",
-  "loginPage": "Login To X2 Trivia",
+
+  "registerMessage" : "Don't have an account yet?",
+  "createAccount" : "Create account",
+
   "signedIn": "Signed in as ",
-  "homePage": "Home Page",
   "selectCategory": "Select category",
   "startGame": "Start game",
   "leaderboard": "Leaderboard",
+
   "signOutConfirmation": "Are you sure you want to sign out?",
   "signOut": "Sign out",
+
   "cancel": "Cancel",
+
   "unknownLoginError": "An unknown error occurred while trying to log in."
 }

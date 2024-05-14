@@ -2,66 +2,64 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:x2trivia/app/screen/login/bloc/login_event.dart';
-import 'package:x2trivia/app/screen/login/bloc/login_state.dart';
 import 'package:x2trivia/app/util/build_context_helper.dart';
 import 'package:x2trivia/data/exceptions/login_exceptions.dart';
 
 import '../../../../domain/repositories/user_repository.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../home/view/home_page.dart';
-import '../../register/view/register_page.dart';
-import '../bloc/login_bloc.dart';
+import '../bloc/register_bloc.dart';
+import '../bloc/register_event.dart';
+import '../bloc/register_state.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatelessWidget {
+  const RegisterPage({super.key});
 
-  static Route<void> route() => MaterialPageRoute(builder: (context) => const LoginPage());
+  static Route<void> route() => MaterialPageRoute(builder: (context) => const RegisterPage());
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginBloc(
+      create: (context) => RegisterBloc(
         userRepository: context.read<UserRepository>(),
       ),
-      child: const LoginPageView(),
+      child: const RegisterPageView(),
     );
   }
 }
 
-class LoginPageView extends StatefulWidget {
-  const LoginPageView({super.key});
+class RegisterPageView extends StatefulWidget {
+  const RegisterPageView({super.key});
 
   @override
-  State<LoginPageView> createState() => _LoginPageViewState();
+  State<RegisterPageView> createState() => _RegisterPageViewState();
 }
 
-class _LoginPageViewState extends State<LoginPageView> {
-  late final LoginBloc loginBloc;
+class _RegisterPageViewState extends State<RegisterPageView> {
+  late final RegisterBloc _registerBloc;
 
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    loginBloc = context.read<LoginBloc>();
+    _registerBloc = context.read<RegisterBloc>();
   }
 
-  void _onLogIn(String email, String password) => loginBloc.add(Login(email: email, password: password));
+  void _onRegister(String displayName, String email, String password) => _registerBloc.add(Register(name: displayName, email: email, password: password));
 
-  void _onObscureTextTap() => loginBloc.add(const LoginObscureText());
-
-  void _onCreateAccount() => Navigator.of(context).push(RegisterPage.route());
+  void _onObscureTextTap() => _registerBloc.add(const RegisterObscureText());
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginBloc, LoginState>(
+    return BlocListener<RegisterBloc, RegisterState>(
       listener: (context, state) {
-        if (state is LoginSuccessState) {
+        if (state is RegisterSuccessState) {
           Navigator.of(context, rootNavigator: true).pushReplacement(HomePage.route(userDisplayName: state.user.displayName));
         }
-        if (state is LoginErrorState) {
+        if (state is RegisterErrorState) {
           Fluttertoast.showToast(
             msg: state.exception.getMessage(context),
             toastLength: Toast.LENGTH_SHORT,
@@ -70,40 +68,52 @@ class _LoginPageViewState extends State<LoginPageView> {
         }
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        appBar: appBar(),
         body: SafeArea(
           bottom: false,
           minimum: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              headerImage(),
-              ...loginForm(),
-              loginButton(),
-              createAccount(),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                headerImage(),
+                ...registerForm(),
+                registerButton(),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
+  PreferredSizeWidget appBar() => AppBar(title: Text(context.strings.createAccount));
+
   Widget headerImage() => Padding(
         padding: const EdgeInsets.only(top: 120, bottom: 60),
         child: SvgPicture.asset(Assets.icons.x2logo),
       );
 
-  List<Widget> loginForm() => [
+  List<Widget> registerForm() => [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: TextField(
+          child: TextFormField(
+            controller: _nameController,
+            decoration: InputDecoration(
+              labelText: context.strings.name,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: TextFormField(
             controller: _emailController,
             decoration: InputDecoration(
               labelText: context.strings.email,
             ),
           ),
         ),
-        BlocBuilder<LoginBloc, LoginState>(
+        BlocBuilder<RegisterBloc, RegisterState>(
           builder: (_, state) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -121,9 +131,9 @@ class _LoginPageViewState extends State<LoginPageView> {
             );
           },
         ),
-        BlocBuilder<LoginBloc, LoginState>(
+        BlocBuilder<RegisterBloc, RegisterState>(
           builder: (_, state) {
-            if (state is LoginLoadingState) {
+            if (state is RegisterLoadingState) {
               return const LinearProgressIndicator(value: null);
             } else {
               return const SizedBox.shrink();
@@ -132,34 +142,14 @@ class _LoginPageViewState extends State<LoginPageView> {
         ),
       ];
 
-  Widget createAccount() => Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 60.0, bottom: 16),
-            child: Text(context.strings.registerMessage),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: _onCreateAccount,
-                  child: Text(context.strings.createAccount),
-                ),
-              ),
-            ],
-          ),
-        ],
-      );
-
-  Widget loginButton() => Row(
+  Widget registerButton() => Row(
         children: [
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: FilledButton(
-                onPressed: () => _onLogIn(_emailController.text, _passwordController.text),
-                child: Text(context.strings.login),
+                onPressed: () => _onRegister(_nameController.text, _emailController.text, _passwordController.text),
+                child: Text(context.strings.createAccount),
               ),
             ),
           ),
