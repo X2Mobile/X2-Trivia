@@ -1,9 +1,9 @@
 final class Category {
-  final int? id;
+  final int id;
   final String name;
 
   Category({
-    this.id,
+    required this.id,
     required this.name,
   });
 }
