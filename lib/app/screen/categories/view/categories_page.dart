@@ -50,47 +50,18 @@ class _CategoriesPageViewState extends State<CategoriesPageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
         title: Text(context.strings.categories),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
+      body: SafeArea(
+        minimum: const EdgeInsets.symmetric(vertical: 16),
         child: BlocBuilder<CategoriesBloc, CategoriesState>(
           builder: (context, state) {
             return Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: Constants.categories.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final category = Constants.categories[index];
-
-                    return CategoryButton(
-                      category: category,
-                      isSelected: state.selectedCategory?.id == category.id,
-                      onPressed: () =>
-                          state.selectedCategory == category ? _onCategoryUnselected() : _onCategorySelected(category),
-                    );
-                  },
-                ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: FilledButton(
-                            onPressed: state.selectedCategory != null
-                                ? () => Navigator.of(context, rootNavigator: true)
-                                    .push(GamePage.route(category: state.selectedCategory!))
-                                : null,
-                            child: Text(context.strings.startPlaying)),
-                      ),
-                    ),
-                  ),
-                ),
+                categoriesList(state.selectedCategory),
+                startGameButton(state.selectedCategory),
               ],
             );
           },
@@ -98,4 +69,30 @@ class _CategoriesPageViewState extends State<CategoriesPageView> {
       ),
     );
   }
+
+  Widget categoriesList(Category? selectedCategory) => Expanded(
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: Constants.categories.length,
+          itemBuilder: (BuildContext context, int index) {
+            final category = Constants.categories[index];
+
+            return CategoryButton(
+              category: category,
+              isSelected: selectedCategory?.id == category.id,
+              onPressed: () => selectedCategory == category ? _onCategoryUnselected() : _onCategorySelected(category),
+            );
+          },
+        ),
+      );
+
+  Widget startGameButton(Category? selectedCategory) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: SizedBox(
+          width: double.infinity,
+          child: FilledButton(
+              onPressed: selectedCategory != null ? () => Navigator.of(context, rootNavigator: true).push(GamePage.route(category: selectedCategory)) : null,
+              child: Text(context.strings.startGame)),
+        ),
+      );
 }
