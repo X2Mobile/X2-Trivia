@@ -22,6 +22,7 @@ dependencies:
   equatable: ^2.0.5
   firebase_core: ^2.27.0
   firebase_auth: ^4.17.0
+  flutter_svg: ^2.0.10+1
   collection: ^1.18.0
   cloud_firestore: ^4.15.8
   http: ^1.2.0
@@ -31,9 +32,15 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  build_runner:
+  flutter_gen_runner:
+
   flutter_lints: ^2.0.0
 
 flutter:
   generate: true
+
+  assets:
+    - assets/icons/
 
   uses-material-design: true
