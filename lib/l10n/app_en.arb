@@ -10,8 +10,9 @@
   "createAccount" : "Create account",
 
   "signedIn": "Signed in as ",
-  "selectCategory": "Select category",
-  "startGame": "Start game",
+  "homePage": "Home Page",
+  "categories": "Categories",
+  "startPlaying": "Start playing",
   "game": "Game",
   "submit": "Submit",
   "next": "Next",
