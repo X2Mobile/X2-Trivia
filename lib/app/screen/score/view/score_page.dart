@@ -89,8 +89,8 @@ class _ScorePageViewState extends State<ScorePageView> {
                     child: state is ScoreLoadInProgress
                         ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator())
                         : state is ScoreLoadSuccess
-                            ? saveScoreButtonContent()
-                            : scoreSavedButtonContent(),
+                            ? scoreSavedButtonContent()
+                            : saveScoreButtonContent(),
                   ),
                 );
               }),
@@ -163,7 +163,7 @@ class _ScorePageViewState extends State<ScorePageView> {
         ),
       );
 
-  Widget saveScoreButtonContent() => Row(
+  Widget scoreSavedButtonContent() => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Icon(Icons.check, size: 18),
@@ -172,7 +172,7 @@ class _ScorePageViewState extends State<ScorePageView> {
         ],
       );
 
-  Widget scoreSavedButtonContent() => Row(
+  Widget saveScoreButtonContent() => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Icon(Icons.emoji_events_outlined, size: 18),
