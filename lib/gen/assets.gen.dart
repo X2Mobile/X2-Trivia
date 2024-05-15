@@ -35,6 +35,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/sports.png
   AssetGenImage get sports => const AssetGenImage('assets/icons/sports.png');
 
+  /// File path: assets/icons/x2logo.svg
+  String get x2logo => 'assets/icons/x2logo.svg';
+
+  /// File path: assets/icons/x2logo_home.svg
+  String get x2logoHome => 'assets/icons/x2logo_home.svg';
+
   /// List of all assets
   List<dynamic> get values => [
         allCategories,
@@ -43,7 +49,9 @@ class $AssetsIconsGen {
         history,
         radioButtonChecked,
         radioButtonUnchecked,
-        sports
+        sports,
+        x2logo,
+        x2logoHome
       ];
 }
 
@@ -51,6 +59,10 @@ class Assets {
   Assets._();
 
   static const $AssetsIconsGen icons = $AssetsIconsGen();
+  static const AssetGenImage saveScore = AssetGenImage('assets/save_score.png');
+
+  /// List of all assets
+  static List<AssetGenImage> get values => [saveScore];
 }
 
 class AssetGenImage {

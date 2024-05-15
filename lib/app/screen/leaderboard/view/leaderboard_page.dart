@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:x2trivia/app/screen/leaderboard/bloc/leaderboard_bloc.dart';
-import 'package:x2trivia/app/screen/leaderboard/bloc/leaderboard_event.dart';
 import 'package:x2trivia/app/screen/leaderboard/bloc/leaderboard_state.dart';
+import 'package:x2trivia/app/theme/colors.dart';
 import 'package:x2trivia/app/util/build_context_helper.dart';
 import 'package:x2trivia/data/utils/constants.dart';
 import 'package:x2trivia/domain/models/category.dart';
@@ -44,14 +44,8 @@ class _LeaderboardPageViewState extends State<LeaderboardPageView> {
     leaderboardBloc = context.read<LeaderboardBloc>();
   }
 
-  void _onSort(bool sortAscending) => leaderboardBloc.add(LeaderboardSort(sortAscending: sortAscending));
-
-  void _onCategorySelected(Category category) => leaderboardBloc.add(LeaderboardCategorySelect(category: category));
-
   @override
   Widget build(BuildContext context) {
-    final columnWidth = MediaQuery.of(context).size.width / 4;
-
     return BlocListener<LeaderboardBloc, LeaderboardState>(
       listener: (context, state) {
         if (state is LeaderboardLoadError) {
@@ -62,85 +56,85 @@ class _LeaderboardPageViewState extends State<LeaderboardPageView> {
           );
         }
       },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(context.strings.leaderboard),
-        ),
-        body: BlocBuilder<LeaderboardBloc, LeaderboardState>(
-          builder: (_, state) {
-            if (state is LeaderboardLoadSuccess) {
-              List<LeaderboardEntry> entries = state.entries.where((element) => element.categoryId == state.selectedCategory?.id).toList();
-              if (state.sortAscending) {
-                entries.sort((a, b) => a.averageScore.compareTo(b.averageScore));
-              } else {
+      child: DefaultTabController(
+        length: Constants.categories.length,
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+            title: Text(context.strings.leaderboard),
+            bottom: TabBar(
+              tabs: Constants.categories.map((category) => Tab(text: category.name.split(" ").first)).toList(),
+              tabAlignment: TabAlignment.center,
+            ),
+          ),
+          body: BlocBuilder<LeaderboardBloc, LeaderboardState>(
+            builder: (_, state) {
+              if (state is LeaderboardLoadSuccess) {
+                List<LeaderboardEntry> entries = state.entries.toList();
                 entries.sort((a, b) => b.averageScore.compareTo(a.averageScore));
+
+                return TabBarView(
+                    children: Constants.categories
+                        .map((category) => buildLeaderboard(context, entries.where((element) => element.categoryId == category.id).toList()))
+                        .toList());
+              } else if (state is LeaderboardLoadInProgress) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                return const SizedBox.shrink();
               }
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    DropdownButton(
-                      value: state.selectedCategory,
-                      items: Constants.categories.map<DropdownMenuItem<Category>>(
-                        (Category category) {
-                          return DropdownMenuItem<Category>(
-                            value: category,
-                            child: Text(category.name),
-                          );
-                        },
-                      ).toList(),
-                      onChanged: (Category? newValue) {
-                        _onCategorySelected(newValue!);
-                      },
-                    ),
-                    buildLeaderboardDataTable(context, entries, state.sortAscending, _onSort, columnWidth)
-                  ],
-                ),
-              );
-            } else if (state is LeaderboardLoadInProgress) {
-              return const Center(child: CircularProgressIndicator());
-            } else {
-              return const SizedBox.shrink();
-            }
-          },
+            },
+          ),
         ),
       ),
     );
   }
 
-  Widget buildLeaderboardDataTable(BuildContext context, List<LeaderboardEntry> entries, bool sortAscending, Function(bool) onSort, double columnWidth) {
-    return FittedBox(
-      child: DataTable(
-        columnSpacing: 10,
-        sortColumnIndex: 3,
-        sortAscending: sortAscending,
-        showBottomBorder: true,
-        columns: [
-          DataColumn(label: SizedBox(width: columnWidth, child: Center(child: Text(context.strings.rank)))),
-          DataColumn(label: SizedBox(width: columnWidth, child: Center(child: Text(context.strings.name)))),
-          DataColumn(label: SizedBox(width: columnWidth, child: Center(child: Text(context.strings.categoryTitle)))),
-          DataColumn(
-              label: SizedBox(width: columnWidth, child: Center(child: Text(context.strings.averageScore))),
-              onSort: (_, ascending) {
-                onSort(ascending);
-              },
-          ),
-        ],
-        rows: List.generate(
-          entries.length,
-          (index) {
-            final entry = entries[index];
-            return DataRow(
-              cells: [
-                DataCell(Center(child: Text('${index + 1}'))),
-                DataCell(Center(child: Text(entry.name))),
-                DataCell(Center(child: Text(Constants.categories.firstWhere((category) => category.id == entry.categoryId).name))),
-                DataCell(Center(child: Text(entry.averageScore.toStringAsFixed(2)))),
-              ],
-            );
-          },
-        ),
-      ),
-    );
+  Widget buildLeaderboard(BuildContext context, List<LeaderboardEntry> entries) {
+    Color getCircleAvatarColor(int rank) {
+      switch (rank) {
+        case 1:
+          return X2TriviaColors.leaderboard1st;
+        case 2:
+          return X2TriviaColors.leaderboard2nd;
+        case 3:
+          return X2TriviaColors.leaderboard3rd;
+        default:
+          return X2TriviaColors.leaderboardOthers;
+      }
+    }
+
+    return ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        itemCount: entries.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: getCircleAvatarColor(index + 1),
+                      child: Text((index + 1).toString()),
+                    ),
+                    Expanded(
+                        child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(entries[index].name),
+                    )),
+                    Text(
+                      entries[index].averageScore.toStringAsFixed(2),
+                      style: Theme.of(context).textTheme.labelSmall,
+                    ),
+                  ],
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 16),
+                child: Divider(height: 1),
+              )
+            ],
+          );
+        });
   }
 }

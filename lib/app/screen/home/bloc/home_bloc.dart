@@ -7,11 +7,9 @@ import '../../../../domain/repositories/user_repository.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc({
     required UserRepository userRepository,
-    String? user,
+    String? userDisplayName,
   })  : _userRepository = userRepository,
-        super(HomeState(
-          user: user,
-        )) {
+        super(HomeState(userDisplayName: userDisplayName)) {
     on<SignOutEvent>(_onSignOut);
   }
 

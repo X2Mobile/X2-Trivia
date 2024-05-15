@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:x2trivia/app/screen/categories/view/categories_page.dart';
 import 'package:x2trivia/app/screen/leaderboard/view/leaderboard_page.dart';
 import 'package:x2trivia/app/util/build_context_helper.dart';
+import 'package:x2trivia/gen/assets.gen.dart';
 
 import '../../../../domain/repositories/user_repository.dart';
 import '../../login/view/login_page.dart';
@@ -15,11 +17,11 @@ class HomePage extends StatelessWidget {
 
   final String? displayName;
 
-  static Route<void> route({String? user}) => MaterialPageRoute(
+  static Route<void> route({String? userDisplayName}) => MaterialPageRoute(
         builder: (context) => BlocProvider(
           create: (BuildContext context) => HomeBloc(
             userRepository: context.read<UserRepository>(),
-            user: user,
+            userDisplayName: userDisplayName,
           ),
           child: const HomePageView(),
         ),
@@ -30,7 +32,7 @@ class HomePage extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) => HomeBloc(
         userRepository: context.read<UserRepository>(),
-        user: displayName,
+        userDisplayName: displayName,
       ),
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (_, state) {
@@ -72,66 +74,81 @@ class _HomePageViewState extends State<HomePageView> {
   @override
   Widget build(BuildContext context) {
     HomeState state = context.watch<HomeBloc>().state;
-    String username = state.user.toString();
+    String username = state.userDisplayName.toString();
 
     return Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  context.strings.x2Trivia,
-                  style: TextStyle(
-                    fontSize: 42,
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                      onPressed: () => Navigator.of(context, rootNavigator: true).push(CategoriesPage.route()),
-                      child: Text(context.strings.startGame)
-                  ),
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton(
-                      onPressed: () => Navigator.of(context, rootNavigator: true).push(LeaderboardPage.route()),
-                      child: Text(context.strings.leaderboard)
-                  ),
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: SvgPicture.asset(Assets.icons.x2logoHome),
+              ),
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: () => Navigator.of(context, rootNavigator: true).push(CategoriesPage.route()),
+                child: Text(context.strings.newGame),
+              ),
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.tonal(
+                onPressed: () => Navigator.of(context, rootNavigator: true).push(LeaderboardPage.route()),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Text(context.strings.signedIn),
-                          Expanded(
-                            child: Text(
-                              username,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () => _onSignOut(),
-                      child: Text(context.strings.signOut),
-                    ),
+                    const Icon(Icons.emoji_events_outlined, size: 18),
+                    const SizedBox(width: 8),
+                    Text(context.strings.leaderboard),
                   ],
                 ),
-              ]
-          ),
-        )
+              ),
+            ),
+            const SizedBox(height: 32),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Text(
+                          context.strings.signedIn,
+                          style: TextStyle(color: Theme.of(context).colorScheme.outline),
+                        ),
+                        Expanded(
+                          child: Text(
+                            username,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  OutlinedButton(
+                    onPressed: _onSignOut,
+                    child: Text(
+                      context.strings.signOut,
+                      style: TextStyle(color: Theme.of(context).colorScheme.error),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -144,7 +161,7 @@ class _HomePageViewState extends State<HomePageView> {
           child: Text(context.strings.cancel),
         ),
         TextButton(
-          onPressed: () => _onSignOutConfirmation(),
+          onPressed: _onSignOutConfirmation,
           child: Text(context.strings.signOut),
         ),
       ],
