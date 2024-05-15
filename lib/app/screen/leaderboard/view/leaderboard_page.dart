@@ -65,6 +65,8 @@ class _LeaderboardPageViewState extends State<LeaderboardPageView> {
             bottom: TabBar(
               tabs: Constants.categories.map((category) => Tab(text: category.name.split(" ").first)).toList(),
               tabAlignment: TabAlignment.center,
+              isScrollable: true,
+              dividerHeight: 0,
             ),
           ),
           body: BlocBuilder<LeaderboardBloc, LeaderboardState>(
