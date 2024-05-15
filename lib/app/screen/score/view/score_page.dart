@@ -70,6 +70,12 @@ class _ScorePageViewState extends State<ScorePageView> {
         }
       },
       child: Scaffold(
+        body: SingleChildScrollView(
+          child: SafeArea(
+            minimum: const EdgeInsets.only(left: 16, top: 128, right: 16, bottom: 16),
+            child: scoreCard(context),
+          ),
+        ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -83,22 +89,8 @@ class _ScorePageViewState extends State<ScorePageView> {
                     child: state is ScoreLoadInProgress
                         ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator())
                         : state is ScoreLoadSuccess
-                            ? Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(Icons.check, size: 18),
-                                  const SizedBox(width: 8),
-                                  Text(context.strings.scoreSaved),
-                                ],
-                              )
-                            : Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(Icons.emoji_events_outlined, size: 18),
-                                  const SizedBox(width: 8),
-                                  Text(context.strings.save),
-                                ],
-                              ),
+                            ? scoreSavedButtonContent()
+                            : saveScoreButtonContent(),
                   ),
                 );
               }),
@@ -111,16 +103,6 @@ class _ScorePageViewState extends State<ScorePageView> {
                     ..pop(),
                   child: Text(context.strings.exit),
                 ),
-              ),
-            ],
-          ),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 16, top: 128, right: 16, bottom: 16),
-                child: scoreCard(context),
               ),
             ],
           ),
@@ -179,5 +161,23 @@ class _ScorePageViewState extends State<ScorePageView> {
             )
           ],
         ),
+      );
+
+  Widget scoreSavedButtonContent() => Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.check, size: 18),
+          const SizedBox(width: 8),
+          Text(context.strings.scoreSaved),
+        ],
+      );
+
+  Widget saveScoreButtonContent() => Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.emoji_events_outlined, size: 18),
+          const SizedBox(width: 8),
+          Text(context.strings.save),
+        ],
       );
 }
