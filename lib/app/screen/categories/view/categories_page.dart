@@ -92,7 +92,7 @@ class _CategoriesPageViewState extends State<CategoriesPageView> {
           width: double.infinity,
           child: FilledButton(
               onPressed: selectedCategory != null ? () => Navigator.of(context, rootNavigator: true).push(GamePage.route(category: selectedCategory)) : null,
-              child: Text(context.strings.startGame)),
+              child: Text(context.strings.startPlaying)),
         ),
       );
 }
