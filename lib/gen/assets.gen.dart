@@ -12,10 +12,6 @@ import 'package:flutter/widgets.dart';
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
-  /// File path: assets/icons/all_categories.png
-  AssetGenImage get allCategories =>
-      const AssetGenImage('assets/icons/all_categories.png');
-
   /// File path: assets/icons/anime.png
   AssetGenImage get anime => const AssetGenImage('assets/icons/anime.png');
 
@@ -32,6 +28,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/radio_button_unchecked.svg
   String get radioButtonUnchecked => 'assets/icons/radio_button_unchecked.svg';
 
+  /// File path: assets/icons/random_questions.png
+  AssetGenImage get randomQuestions =>
+      const AssetGenImage('assets/icons/random_questions.png');
+
   /// File path: assets/icons/sports.png
   AssetGenImage get sports => const AssetGenImage('assets/icons/sports.png');
 
@@ -43,12 +43,12 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<dynamic> get values => [
-        allCategories,
         anime,
         generalKnowledge,
         history,
         radioButtonChecked,
         radioButtonUnchecked,
+        randomQuestions,
         sports,
         x2logo,
         x2logoHome
