@@ -10,8 +10,9 @@
   "createAccount" : "Create account",
 
   "signedIn": "Signed in as ",
-  "selectCategory": "Select category",
-  "startGame": "Start game",
+  "homePage": "Home Page",
+  "categories": "Categories",
+  "startPlaying": "Start playing",
   "game": "Game",
   "submit": "Submit",
   "next": "Next",
@@ -34,6 +35,8 @@
 
   "unknownLoginError": "An unknown error occurred while trying to log in.",
   "category": "Category: ",
-  "score": "Score: ",
-  "save": "Save"
+  "finalScore": "Final score: ",
+  "scoreSaved": "Score saved",
+  "exit": "Exit to Homescreen",
+  "save": "Save score to Leaderboard"
 }
