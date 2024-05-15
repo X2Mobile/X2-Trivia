@@ -12,6 +12,23 @@ import 'package:flutter/widgets.dart';
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/anime.png
+  AssetGenImage get anime => const AssetGenImage('assets/icons/anime.png');
+
+  /// File path: assets/icons/general_knowledge.png
+  AssetGenImage get generalKnowledge =>
+      const AssetGenImage('assets/icons/general_knowledge.png');
+
+  /// File path: assets/icons/history.png
+  AssetGenImage get history => const AssetGenImage('assets/icons/history.png');
+
+  /// File path: assets/icons/random_questions.png
+  AssetGenImage get randomQuestions =>
+      const AssetGenImage('assets/icons/random_questions.png');
+
+  /// File path: assets/icons/sports.png
+  AssetGenImage get sports => const AssetGenImage('assets/icons/sports.png');
+
   /// File path: assets/icons/x2logo.svg
   String get x2logo => 'assets/icons/x2logo.svg';
 
@@ -19,7 +36,15 @@ class $AssetsIconsGen {
   String get x2logoHome => 'assets/icons/x2logo_home.svg';
 
   /// List of all assets
-  List<String> get values => [x2logo, x2logoHome];
+  List<dynamic> get values => [
+        anime,
+        generalKnowledge,
+        history,
+        randomQuestions,
+        sports,
+        x2logo,
+        x2logoHome
+      ];
 }
 
 class Assets {
