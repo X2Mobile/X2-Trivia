@@ -13,8 +13,11 @@ class $AssetsIconsGen {
   /// File path: assets/icons/x2logo.svg
   String get x2logo => 'assets/icons/x2logo.svg';
 
+  /// File path: assets/icons/x2logo_home.svg
+  String get x2logoHome => 'assets/icons/x2logo_home.svg';
+
   /// List of all assets
-  List<String> get values => [x2logo];
+  List<String> get values => [x2logo, x2logoHome];
 }
 
 class Assets {
