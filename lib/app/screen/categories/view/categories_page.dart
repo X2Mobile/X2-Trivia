@@ -86,7 +86,7 @@ class _CategoriesPageViewState extends State<CategoriesPageView> {
                                 ? () => Navigator.of(context, rootNavigator: true)
                                     .push(GamePage.route(category: state.selectedCategory!))
                                 : null,
-                            child: Text(context.strings.startGame)),
+                            child: Text(context.strings.startPlaying)),
                       ),
                     ),
                   ),
