@@ -20,7 +20,6 @@ class CategoryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: onPressed,
-        behavior: HitTestBehavior.translucent,
         child: Container(
           color: isSelected ? Colors.grey.shade200 : Colors.transparent,
           child: Column(

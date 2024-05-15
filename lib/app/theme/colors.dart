@@ -13,4 +13,7 @@ final class X2TriviaColors {
   static const leaderboard2nd = Color(0xffdedede);
   static const leaderboard3rd = Color(0xfff3b88c);
   static const leaderboardOthers = Color(0xffdee0ff);
+
+  static const greenCorrect = Color(0xff79B933);
+  static const redWrong = Color(0xffDE3730);
 }
