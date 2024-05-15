@@ -1,4 +1,4 @@
-class Answer<String, bool> {
+class Answer {
   final String text;
   final bool isCorrect;
 
