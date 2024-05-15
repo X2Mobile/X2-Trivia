@@ -5,9 +5,9 @@ import 'package:x2trivia/app/screen/score/bloc/score_state.dart';
 import 'package:x2trivia/app/util/build_context_helper.dart';
 import 'package:x2trivia/domain/models/category.dart';
 import 'package:x2trivia/domain/repositories/score_repository.dart';
+import 'package:x2trivia/gen/assets.gen.dart';
 
 import '../../../../domain/repositories/user_repository.dart';
-import '../../leaderboard/view/leaderboard_page.dart';
 import '../bloc/score_bloc.dart';
 import '../bloc/score_event.dart';
 
@@ -60,99 +60,124 @@ class _ScorePageViewState extends State<ScorePageView> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<ScoreBloc, ScoreState>(
-        listener: (context, state) {
-          if (state is ScoreLoadSuccess) {
-            Navigator.of(context, rootNavigator: true).pushReplacement(LeaderboardPage.route());
-          }
-          if (state is ScoreLoadError) {
-            Fluttertoast.showToast(
-              msg: state.exception,
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-            );
-          }
-        },
-        child: Scaffold(
-          body: Padding(
-            padding: const EdgeInsets.only(top: 100.0, left: 16.0, right: 16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      context.strings.score,
-                      style: const TextStyle(
-                        fontSize: 50,
-                      ),
-                    ),
-                    BlocBuilder<ScoreBloc, ScoreState>(
-                      builder: (_, state) {
-                        return Text(
-                          state.score.toString(),
-                          style: TextStyle(
-                            fontSize: 80,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      context.strings.category,
-                      style: const TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                    BlocBuilder<ScoreBloc, ScoreState>(
-                      builder: (_, state) {
-                        return Text(
-                          state.category.name,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: FilledButton(
-                        onPressed: () => _onSaveScore(),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(context.strings.save, style: const TextStyle(fontSize: 20)),
-                        )),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: BlocBuilder<ScoreBloc, ScoreState>(
-                    builder: (_, state) {
-                      if (state is ScoreLoadInProgress) {
-                        return const CircularProgressIndicator(
-                          value: null,
-                        );
-                      } else {
-                        return const SizedBox.shrink();
-                      }
-                    },
-                  ),
-                ),
-              ],
-            ),
+      listener: (context, state) {
+        if (state is ScoreLoadError) {
+          Fluttertoast.showToast(
+            msg: state.exception,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+          );
+        }
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: SafeArea(
+            minimum: const EdgeInsets.only(left: 16, top: 128, right: 16, bottom: 16),
+            child: scoreCard(context),
           ),
-        ));
+        ),
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              BlocBuilder<ScoreBloc, ScoreState>(builder: (_, state) {
+                return SizedBox(
+                  width: double.infinity,
+                  child: FilledButton.tonal(
+                    onPressed: state is ScoreInitial ? _onSaveScore : () {},
+                    child: state is ScoreLoadInProgress
+                        ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator())
+                        : state is ScoreLoadSuccess
+                            ? scoreSavedButtonContent()
+                            : saveScoreButtonContent(),
+                  ),
+                );
+              }),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: () => Navigator.of(context)
+                    ..pop()
+                    ..pop(),
+                  child: Text(context.strings.exit),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
+
+  Widget scoreCard(BuildContext context) => Card(
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            color: Theme.of(context).colorScheme.outlineVariant,
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        shadowColor: Colors.transparent,
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Assets.saveScore.image(),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        context.strings.finalScore,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      BlocBuilder<ScoreBloc, ScoreState>(
+                        builder: (_, state) {
+                          return Text(
+                            state.score.toString(),
+                            style: Theme.of(context).textTheme.titleLarge,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text(context.strings.category),
+                      BlocBuilder<ScoreBloc, ScoreState>(
+                        builder: (_, state) {
+                          return Text(state.category.name);
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+
+  Widget scoreSavedButtonContent() => Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.check, size: 18),
+          const SizedBox(width: 8),
+          Text(context.strings.scoreSaved),
+        ],
+      );
+
+  Widget saveScoreButtonContent() => Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.emoji_events_outlined, size: 18),
+          const SizedBox(width: 8),
+          Text(context.strings.save),
+        ],
+      );
 }
