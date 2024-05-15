@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../../domain/models/category.dart';
-import '../../../gen/assets.gen.dart';
 
 class CategoryButton extends StatelessWidget {
   const CategoryButton({
@@ -39,7 +37,7 @@ class CategoryButton extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SvgPicture.asset(isSelected ? Assets.icons.radioButtonChecked : Assets.icons.radioButtonUnchecked)
+                    Icon(isSelected ? Icons.radio_button_on : Icons.radio_button_off_rounded)
                   ],
                 ),
               ),

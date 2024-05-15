@@ -22,12 +22,6 @@ class $AssetsIconsGen {
   /// File path: assets/icons/history.png
   AssetGenImage get history => const AssetGenImage('assets/icons/history.png');
 
-  /// File path: assets/icons/radio_button_checked.svg
-  String get radioButtonChecked => 'assets/icons/radio_button_checked.svg';
-
-  /// File path: assets/icons/radio_button_unchecked.svg
-  String get radioButtonUnchecked => 'assets/icons/radio_button_unchecked.svg';
-
   /// File path: assets/icons/random_questions.png
   AssetGenImage get randomQuestions =>
       const AssetGenImage('assets/icons/random_questions.png');
@@ -46,8 +40,6 @@ class $AssetsIconsGen {
         anime,
         generalKnowledge,
         history,
-        radioButtonChecked,
-        radioButtonUnchecked,
         randomQuestions,
         sports,
         x2logo,
