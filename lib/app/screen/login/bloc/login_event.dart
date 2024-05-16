@@ -7,17 +7,16 @@ sealed class LoginEvent extends Equatable {
   List<Object> get props => [];
 }
 
+//todo adauga parola ca proprietate in aceasta clasa
 final class Login extends LoginEvent {
   const Login({
     required this.email,
-    required this.password,
   });
 
   final String email;
-  final String password;
 
   @override
-  List<Object> get props => [email, password];
+  List<Object> get props => [email,];
 }
 
 final class LoginObscureText extends LoginEvent {

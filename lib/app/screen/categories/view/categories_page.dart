@@ -14,15 +14,15 @@ class CategoriesPage extends StatelessWidget {
   const CategoriesPage({super.key});
 
   static Route<Category> route() => MaterialPageRoute(
-        builder: (context) => BlocProvider(
-          create: (context) => CategoriesBloc(),
-          child: const CategoriesPageView(),
-        ),
+        builder: (context) => const CategoriesPage(),
       );
 
   @override
   Widget build(BuildContext context) {
-    return const CategoriesPageView();
+    return BlocProvider(
+      create: (context) => CategoriesBloc(),
+      child: const CategoriesPageView(),
+    );
   }
 }
 
@@ -42,10 +42,6 @@ class _CategoriesPageViewState extends State<CategoriesPageView> {
     selectCategoryBloc = context.read<CategoriesBloc>();
   }
 
-  void _onCategorySelected(Category category) => selectCategoryBloc.add(CategorySelect(category: category));
-
-  void _onCategoryUnselected() => selectCategoryBloc.add(const CategoryUnselect());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,42 +53,15 @@ class _CategoriesPageViewState extends State<CategoriesPageView> {
         minimum: const EdgeInsets.symmetric(vertical: 16),
         child: BlocBuilder<CategoriesBloc, CategoriesState>(
           builder: (context, state) {
-            return Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                categoriesList(state.selectedCategory),
-                startGameButton(state.selectedCategory),
-              ],
-            );
+            //todo adauga componentele acestui ecran
+            return const SizedBox.shrink();
           },
         ),
       ),
     );
   }
 
-  Widget categoriesList(Category? selectedCategory) => Expanded(
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: Constants.categories.length,
-          itemBuilder: (BuildContext context, int index) {
-            final category = Constants.categories[index];
+  //todo adauga lista de categorii
 
-            return CategoryButton(
-              category: category,
-              isSelected: selectedCategory?.id == category.id,
-              onPressed: () => selectedCategory == category ? _onCategoryUnselected() : _onCategorySelected(category),
-            );
-          },
-        ),
-      );
-
-  Widget startGameButton(Category? selectedCategory) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: SizedBox(
-          width: double.infinity,
-          child: FilledButton(
-              onPressed: selectedCategory != null ? () => Navigator.of(context, rootNavigator: true).push(GamePage.route(category: selectedCategory)) : null,
-              child: Text(context.strings.startPlaying)),
-        ),
-      );
+  //todo adauga butonul de start game
 }

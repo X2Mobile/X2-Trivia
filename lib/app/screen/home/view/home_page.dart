@@ -102,7 +102,8 @@ class _HomePageViewState extends State<HomePageView> {
   Widget newGameButton() => SizedBox(
     width: double.infinity,
     child: FilledButton(
-      onPressed: () => Navigator.of(context, rootNavigator: true).push(CategoriesPage.route()),
+      //todo navigheaza la category page
+      onPressed: () {},
       child: Text(context.strings.newGame),
     ),
   );
@@ -110,7 +111,8 @@ class _HomePageViewState extends State<HomePageView> {
   Widget leaderboardButton() => SizedBox(
     width: double.infinity,
     child: FilledButton.tonal(
-      onPressed: () => Navigator.of(context, rootNavigator: true).push(LeaderboardPage.route()),
+      //todo navigheaza la leaerboard page
+      onPressed: () {},
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

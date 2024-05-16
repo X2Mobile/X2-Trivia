@@ -12,7 +12,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   })  : _userRepository = userRepository,
         super(const LoginState()) {
     on<Login>(_onLogin);
-    on<LoginObscureText>(_onObscureText);
+    //todo handle LoginObscureText event
   }
 
   final UserRepository _userRepository;
@@ -23,9 +23,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async {
     emit(LoginLoadingState.fromState(state));
     await emit.forEach<User>(
-      _userRepository.loginUser(event.email, event.password),
+      _userRepository.loginUser(event.email, ""),
       onData: (newUser) {
-        return LoginSuccessState.fromState(state, newUser);
+        //todo returneaza state ul potrivit cand facem un login de succes
+        return state;
       },
       onError: (error, stackTrace) {
         AuthenticationException exception = error as AuthenticationException;

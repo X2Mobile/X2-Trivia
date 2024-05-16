@@ -36,7 +36,7 @@ class CategoryButton extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Icon(isSelected ? Icons.radio_button_on : Icons.radio_button_off_rounded)
+                    //todo adauga icon ul de selectat/neselectat
                   ],
                 ),
               ),
