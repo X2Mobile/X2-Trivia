@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:x2trivia/app/screen/game/bloc/game_event.dart';
 import 'package:x2trivia/app/screen/game/bloc/game_state.dart';
 import 'package:x2trivia/domain/models/category.dart';
-import 'package:x2trivia/domain/models/question.dart';
 import 'package:x2trivia/domain/repositories/questions_repository.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
@@ -28,25 +27,24 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     Emitter<GameState> emit,
   ) async {
     try {
-      final List<Question> questions = await questionsRepository.getQuestions(category);
-
-      emit(GameInProgress(category: category, questions: questions));
+      //todo make api call
+      emit(GameInProgress(category: category, questions: List.empty()));
     } catch (error) {
       emit(GameLoadError(category: category, exception: error.toString()));
     }
   }
 
   void _onSelectAnswer(
-      GameAnswerSelect event,
-      Emitter<GameState> emit,
+    GameAnswerSelect event,
+    Emitter<GameState> emit,
   ) {
     final currentState = state as GameInProgress;
     emit(currentState.copyWith(selectedAnswer: event.answer));
   }
 
   void _onUnselectAnswer(
-      GameAnswerUnselect event,
-      Emitter<GameState> emit,
+    GameAnswerUnselect event,
+    Emitter<GameState> emit,
   ) {
     final currentState = state as GameInProgress;
     emit(currentState.copyWith(selectedAnswer: null));
