@@ -53,10 +53,6 @@ class _ScorePageViewState extends State<ScorePageView> {
     _scoreBloc = context.read<ScoreBloc>();
   }
 
-  void _onSaveScore() {
-    _scoreBloc.add(const ScoreSave());
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<ScoreBloc, ScoreState>(
@@ -82,17 +78,8 @@ class _ScorePageViewState extends State<ScorePageView> {
             mainAxisSize: MainAxisSize.min,
             children: [
               BlocBuilder<ScoreBloc, ScoreState>(builder: (_, state) {
-                return SizedBox(
-                  width: double.infinity,
-                  child: FilledButton.tonal(
-                    onPressed: state is ScoreInitial ? _onSaveScore : () {},
-                    child: state is ScoreLoadInProgress
-                        ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator())
-                        : state is ScoreLoadSuccess
-                            ? scoreSavedButtonContent()
-                            : saveScoreButtonContent(),
-                  ),
-                );
+                //todo adauga buton pentru salvarea scorului
+                return const SizedBox.shrink();
               }),
               const SizedBox(height: 8),
               SizedBox(
@@ -126,58 +113,8 @@ class _ScorePageViewState extends State<ScorePageView> {
               borderRadius: BorderRadius.circular(12),
               child: Assets.saveScore.image(),
             ),
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        context.strings.finalScore,
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      BlocBuilder<ScoreBloc, ScoreState>(
-                        builder: (_, state) {
-                          return Text(
-                            state.score.toString(),
-                            style: Theme.of(context).textTheme.titleLarge,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(context.strings.category),
-                      BlocBuilder<ScoreBloc, ScoreState>(
-                        builder: (_, state) {
-                          return Text(state.category.name);
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )
+            //todo adauga scorul si categoria
           ],
         ),
-      );
-
-  Widget scoreSavedButtonContent() => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.check, size: 18),
-          const SizedBox(width: 8),
-          Text(context.strings.scoreSaved),
-        ],
-      );
-
-  Widget saveScoreButtonContent() => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.emoji_events_outlined, size: 18),
-          const SizedBox(width: 8),
-          Text(context.strings.save),
-        ],
       );
 }
