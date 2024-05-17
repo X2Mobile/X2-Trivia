@@ -59,10 +59,8 @@ class _GamePageViewState extends State<GamePageView> {
     );
   }
 
-  //todo add event for answer selected
   void _onAnswerSelected(Answer answer) => {};
 
-  //todo add event for answer unselected
   void _onAnswerUnselected() => {};
 
   void _onValidateAnswer() => gameBloc.add(const GameValidateAnswerEvent());
@@ -72,7 +70,6 @@ class _GamePageViewState extends State<GamePageView> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<GameBloc, GameState>(
-      // todo handle ending game
       listener: (context, state) {
         if (state is GameLoadError) {
           Fluttertoast.showToast(
@@ -87,7 +84,6 @@ class _GamePageViewState extends State<GamePageView> {
       child: Scaffold(
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
-            //todo add title and closing icon
           ),
           body: content(context)),
     );
@@ -134,9 +130,7 @@ class _GamePageViewState extends State<GamePageView> {
         children: [
           const Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0),
-              //todo adauga header cu scor ca in design
               child: SizedBox.shrink()),
-          // todo adauga progressbar si animatie
           Padding(
             padding: const EdgeInsets.only(top: 40.0, bottom: 8.0),
             child: Text(

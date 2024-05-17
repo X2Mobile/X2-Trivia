@@ -27,7 +27,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     Emitter<GameState> emit,
   ) async {
     try {
-      //todo make api call
       emit(GameInProgress(category: category, questions: List.empty()));
     } catch (error) {
       emit(GameLoadError(category: category, exception: error.toString()));

@@ -57,10 +57,9 @@ class _AppState extends State<AppView> {
         Locale('en'), // English
       ],
       theme: X2TriviaTheme.lightTheme,
-      //todo daca ii logat user ul navigheaza direct in home page
       home: BlocBuilder<AppBloc, AppState>(
         builder: (_, state) {
-          return const CategoriesPage();
+          return const RegisterPage();
         },
       ),
     );

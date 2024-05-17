@@ -78,7 +78,6 @@ class _ScorePageViewState extends State<ScorePageView> {
             mainAxisSize: MainAxisSize.min,
             children: [
               BlocBuilder<ScoreBloc, ScoreState>(builder: (_, state) {
-                //todo adauga buton pentru salvarea scorului
                 return const SizedBox.shrink();
               }),
               const SizedBox(height: 8),
@@ -113,7 +112,6 @@ class _ScorePageViewState extends State<ScorePageView> {
               borderRadius: BorderRadius.circular(12),
               child: Assets.saveScore.image(),
             ),
-            //todo adauga scorul si categoria
           ],
         ),
       );

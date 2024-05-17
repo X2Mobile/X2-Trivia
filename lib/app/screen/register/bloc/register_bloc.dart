@@ -26,7 +26,7 @@ final class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       _userRepository.createUser(event.name, event.email, event.password),
       onData: (newUser) => RegisterSuccessState.fromState(state, newUser),
       onError: (error, stackTrace) {
-        AuthenticationException exception = AuthenticationException.firebase(error.toString());
+        AuthenticationException exception = AuthenticationException.firebase((error as AuthenticationException).message());
         return RegisterErrorState.fromState(state, exception);
       },
     );

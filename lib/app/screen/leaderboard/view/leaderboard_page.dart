@@ -74,11 +74,9 @@ class _LeaderboardPageViewState extends State<LeaderboardPageView> {
             builder: (_, state) {
               if (state is LeaderboardLoadSuccess) {
                 List<LeaderboardEntry> entries = state.entries;
-                //todo sorteaza entry-urile
 
                 return TabBarView(
                     children: Constants.categories
-                        //todo filtreaza entry-urile
                         .map((category) => buildLeaderboard(context, entries))
                         .toList());
               } else if (state is LeaderboardLoadInProgress) {
@@ -94,7 +92,6 @@ class _LeaderboardPageViewState extends State<LeaderboardPageView> {
   }
 
   Widget buildLeaderboard(BuildContext context, List<LeaderboardEntry> entries) {
-    //todo creeaza leaderboard-ul
     return ListView.builder(
         padding: const EdgeInsets.symmetric(vertical: 16),
         itemCount: entries.length,

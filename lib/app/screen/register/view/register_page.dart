@@ -12,7 +12,6 @@ import '../bloc/register_bloc.dart';
 import '../bloc/register_event.dart';
 import '../bloc/register_state.dart';
 
-//todo explica cum functioneaza bloc, state, cam tot ce e aici
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
 

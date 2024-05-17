@@ -53,7 +53,6 @@ class _CategoriesPageViewState extends State<CategoriesPageView> {
         minimum: const EdgeInsets.symmetric(vertical: 16),
         child: BlocBuilder<CategoriesBloc, CategoriesState>(
           builder: (context, state) {
-            //todo adauga componentele acestui ecran
             return const SizedBox.shrink();
           },
         ),
@@ -61,7 +60,4 @@ class _CategoriesPageViewState extends State<CategoriesPageView> {
     );
   }
 
-  //todo adauga lista de categorii
-
-  //todo adauga butonul de start game
 }

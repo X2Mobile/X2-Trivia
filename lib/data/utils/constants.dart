@@ -6,7 +6,6 @@ final class Constants {
 
   static final List<Category> categories = [
     Category(id: -1, name: 'Random Questions', icon: Assets.icons.randomQuestions),
-    //todo adauga categoria general knowledge cu id 0
     Category(id: 21, name: 'Sports', icon: Assets.icons.sports),
     Category(id: 23, name: 'History', icon: Assets.icons.history),
     Category(id: 31, name: 'Anime', icon: Assets.icons.anime),

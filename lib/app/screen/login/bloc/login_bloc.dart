@@ -12,7 +12,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   })  : _userRepository = userRepository,
         super(const LoginState()) {
     on<Login>(_onLogin);
-    //todo handle LoginObscureText event
   }
 
   final UserRepository _userRepository;
@@ -25,7 +24,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     await emit.forEach<User>(
       _userRepository.loginUser(event.email, ""),
       onData: (newUser) {
-        //todo returneaza state ul potrivit cand facem un login de succes
         return state;
       },
       onError: (error, stackTrace) {

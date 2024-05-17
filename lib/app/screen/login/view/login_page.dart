@@ -40,7 +40,6 @@ class _LoginPageViewState extends State<LoginPageView> {
   late final LoginBloc loginBloc;
 
   final _emailController = TextEditingController();
-  // todo adauga un controller pentru field ul de password
 
   @override
   void initState() {
@@ -48,12 +47,10 @@ class _LoginPageViewState extends State<LoginPageView> {
     loginBloc = context.read<LoginBloc>();
   }
 
-  //todo adauga event ul la bloc
   void _onLogIn(String email, String password) {}
 
   void _onObscureTextTap() => loginBloc.add(const LoginObscureText());
 
-  //todo navigheaza la urmatorul ecran
   void _onCreateAccount() {}
 
   @override
@@ -90,10 +87,9 @@ class _LoginPageViewState extends State<LoginPageView> {
     );
   }
 
-  Widget headerImage() => const Padding(
-        padding: EdgeInsets.only(top: 120, bottom: 60),
-        //todo adauga logo ul aplicatiei
-        child: SizedBox.shrink(),
+  Widget headerImage() => Padding(
+        padding: const EdgeInsets.only(top: 120, bottom: 60),
+        child: SvgPicture.asset(Assets.icons.x2logo),
       );
 
   List<Widget> loginForm() => [
@@ -111,13 +107,9 @@ class _LoginPageViewState extends State<LoginPageView> {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: TextFormField(
-                //todo adauga un controller
                 controller: null,
-                //todo ascunde parola
                 obscureText: false,
                 decoration: InputDecoration(
-                  //todo adauga un hint
-                  //todo adauga un suffix icon acestui field
                 ),
               ),
             );
@@ -134,7 +126,6 @@ class _LoginPageViewState extends State<LoginPageView> {
         ),
       ];
 
-  //todo widget ul de create account
   Widget createAccount() => const SizedBox.shrink();
 
   Widget loginButton() => Row(
@@ -143,7 +134,6 @@ class _LoginPageViewState extends State<LoginPageView> {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: FilledButton(
-                //todo apeleaza metoda de login
                 onPressed: (){},
                 child: Text(context.strings.login),
               ),

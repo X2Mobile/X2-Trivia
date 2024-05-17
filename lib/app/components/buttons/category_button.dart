@@ -36,7 +36,6 @@ class CategoryButton extends StatelessWidget {
                         ),
                       ],
                     ),
-                    //todo adauga icon ul de selectat/neselectat
                   ],
                 ),
               ),
