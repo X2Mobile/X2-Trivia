@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:x2trivia/app/screen/categories/view/categories_page.dart';
 import 'package:x2trivia/app/screen/home/view/home_page.dart';
 import 'package:x2trivia/app/screen/login/view/login_page.dart';
+import 'package:x2trivia/app/screen/register/view/register_page.dart';
 import 'package:x2trivia/app/theme/theme.dart';
 import 'package:x2trivia/domain/repositories/questions_repository.dart';
 import 'package:x2trivia/domain/repositories/score_repository.dart';
@@ -41,31 +43,26 @@ class AppView extends StatefulWidget {
 }
 
 class _AppState extends State<AppView> {
-  late final AppBloc appBloc;
-
-  @override
-  void initState() {
-    super.initState();
-
-    appBloc = context.read<AppBloc>();
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'X2 Trivia Game',
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale('en'), // English
-        ],
-        theme: X2TriviaTheme.lightTheme,
-        home: BlocBuilder<AppBloc, AppState>(builder: (_, state) {
-          return state.user == null ? const LoginPage() : HomePage(state.user!.displayName);
-        }));
+      title: 'X2 Trivia Game',
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'), // English
+      ],
+      theme: X2TriviaTheme.lightTheme,
+      //todo daca ii logat user ul navigheaza direct in home page
+      home: BlocBuilder<AppBloc, AppState>(
+        builder: (_, state) {
+          return const CategoriesPage();
+        },
+      ),
+    );
   }
 }

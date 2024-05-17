@@ -40,7 +40,7 @@ class _LoginPageViewState extends State<LoginPageView> {
   late final LoginBloc loginBloc;
 
   final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  // todo adauga un controller pentru field ul de password
 
   @override
   void initState() {
@@ -48,11 +48,13 @@ class _LoginPageViewState extends State<LoginPageView> {
     loginBloc = context.read<LoginBloc>();
   }
 
-  void _onLogIn(String email, String password) => loginBloc.add(Login(email: email, password: password));
+  //todo adauga event ul la bloc
+  void _onLogIn(String email, String password) {}
 
   void _onObscureTextTap() => loginBloc.add(const LoginObscureText());
 
-  void _onCreateAccount() => Navigator.of(context).push(RegisterPage.route());
+  //todo navigheaza la urmatorul ecran
+  void _onCreateAccount() {}
 
   @override
   Widget build(BuildContext context) {
@@ -88,9 +90,10 @@ class _LoginPageViewState extends State<LoginPageView> {
     );
   }
 
-  Widget headerImage() => Padding(
-        padding: const EdgeInsets.only(top: 120, bottom: 60),
-        child: SvgPicture.asset(Assets.icons.x2logo),
+  Widget headerImage() => const Padding(
+        padding: EdgeInsets.only(top: 120, bottom: 60),
+        //todo adauga logo ul aplicatiei
+        child: SizedBox.shrink(),
       );
 
   List<Widget> loginForm() => [
@@ -108,14 +111,13 @@ class _LoginPageViewState extends State<LoginPageView> {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: TextFormField(
-                controller: _passwordController,
-                obscureText: !state.isPasswordVisible,
+                //todo adauga un controller
+                controller: null,
+                //todo ascunde parola
+                obscureText: false,
                 decoration: InputDecoration(
-                  labelText: context.strings.password,
-                  suffixIcon: IconButton(
-                    icon: Icon(state.isPasswordVisible ? Icons.visibility : Icons.visibility_off),
-                    onPressed: _onObscureTextTap,
-                  ),
+                  //todo adauga un hint
+                  //todo adauga un suffix icon acestui field
                 ),
               ),
             );
@@ -132,25 +134,8 @@ class _LoginPageViewState extends State<LoginPageView> {
         ),
       ];
 
-  Widget createAccount() => Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 60.0, bottom: 16),
-            child: Text(context.strings.registerMessage),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: _onCreateAccount,
-                  child: Text(context.strings.createAccount),
-                ),
-              ),
-            ],
-          ),
-        ],
-      );
+  //todo widget ul de create account
+  Widget createAccount() => const SizedBox.shrink();
 
   Widget loginButton() => Row(
         children: [
@@ -158,7 +143,8 @@ class _LoginPageViewState extends State<LoginPageView> {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: FilledButton(
-                onPressed: () => _onLogIn(_emailController.text, _passwordController.text),
+                //todo apeleaza metoda de login
+                onPressed: (){},
                 child: Text(context.strings.login),
               ),
             ),
