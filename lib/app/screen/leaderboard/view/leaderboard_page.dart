@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -72,12 +73,13 @@ class _LeaderboardPageViewState extends State<LeaderboardPageView> {
           body: BlocBuilder<LeaderboardBloc, LeaderboardState>(
             builder: (_, state) {
               if (state is LeaderboardLoadSuccess) {
-                List<LeaderboardEntry> entries = state.entries.toList();
-                entries.sort((a, b) => b.averageScore.compareTo(a.averageScore));
+                List<LeaderboardEntry> entries = state.entries;
+                //todo sorteaza entry-urile
 
                 return TabBarView(
                     children: Constants.categories
-                        .map((category) => buildLeaderboard(context, entries.where((element) => element.categoryId == category.id).toList()))
+                        //todo filtreaza entry-urile
+                        .map((category) => buildLeaderboard(context, entries))
                         .toList());
               } else if (state is LeaderboardLoadInProgress) {
                 return const Center(child: CircularProgressIndicator());
@@ -92,37 +94,15 @@ class _LeaderboardPageViewState extends State<LeaderboardPageView> {
   }
 
   Widget buildLeaderboard(BuildContext context, List<LeaderboardEntry> entries) {
-    Color getCircleAvatarColor(int rank) {
-      switch (rank) {
-        case 1:
-          return X2TriviaColors.leaderboard1st;
-        case 2:
-          return X2TriviaColors.leaderboard2nd;
-        case 3:
-          return X2TriviaColors.leaderboard3rd;
-        default:
-          return X2TriviaColors.leaderboardOthers;
-      }
-    }
-
+    //todo creeaza leaderboard-ul
     return ListView.builder(
         padding: const EdgeInsets.symmetric(vertical: 16),
         itemCount: entries.length,
         itemBuilder: (BuildContext context, int index) {
-          return Column(
+          return Row(
             children: [
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: getCircleAvatarColor(index + 1),
-                  child: Text((index + 1).toString()),
-                ),
-                trailing: Text(
-                  entries[index].averageScore.toStringAsFixed(2),
-                  style: Theme.of(context).textTheme.labelSmall,
-                ),
-                title: Text(entries[index].name),
-              ),
-              const Divider(indent: 16),
+              Text(entries[index].name),
+              Text(entries[index].averageScore.toString()),
             ],
           );
         });
