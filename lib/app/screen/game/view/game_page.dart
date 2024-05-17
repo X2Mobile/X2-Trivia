@@ -59,9 +59,11 @@ class _GamePageViewState extends State<GamePageView> {
     );
   }
 
-  void _onAnswerSelected(Answer answer) => gameBloc.add(GameAnswerSelect(answer: answer));
+  //todo add event for answer selected
+  void _onAnswerSelected(Answer answer) => {};
 
-  void _onAnswerUnselected() => gameBloc.add(const GameAnswerUnselect());
+  //todo add event for answer unselected
+  void _onAnswerUnselected() => {};
 
   void _onValidateAnswer() => gameBloc.add(const GameValidateAnswerEvent());
 
@@ -69,29 +71,25 @@ class _GamePageViewState extends State<GamePageView> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) => _onEndGame(),
-      child: BlocListener<GameBloc, GameState>(
-        listener: (context, state) {
-          if (state is GameLoadError) {
-            Fluttertoast.showToast(
-              msg: state.exception,
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-            );
-          } else if (state is GameEnded) {
-            Navigator.of(context, rootNavigator: true).pushReplacement(ScorePage.route(score: state.score, category: state.category));
-          }
-        },
-        child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
-              title: Text(_category.name),
-              leading: CloseButton(onPressed: _onEndGame),
-            ),
-            body: content(context)),
-      ),
+    return BlocListener<GameBloc, GameState>(
+      // todo handle ending game
+      listener: (context, state) {
+        if (state is GameLoadError) {
+          Fluttertoast.showToast(
+            msg: state.exception,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+          );
+        } else if (state is GameEnded) {
+          Navigator.of(context, rootNavigator: true).pushReplacement(ScorePage.route(score: state.score, category: state.category));
+        }
+      },
+      child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+            //todo add title and closing icon
+          ),
+          body: content(context)),
     );
   }
 
@@ -134,25 +132,11 @@ class _GamePageViewState extends State<GamePageView> {
 
   Widget questionHeader(List<Question> questions, int questionIndex, int score) => Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("${questionIndex + 1} / ${questions.length}"),
-                Text(context.strings.currentScore + score.toString()),
-              ],
-            ),
-          ),
-          TweenAnimationBuilder<double>(
-            duration: const Duration(milliseconds: 250),
-            curve: Curves.easeInOut,
-            tween: Tween<double>(
-              begin: 0,
-              end: (questionIndex + 1) / questions.length,
-            ),
-            builder: (context, value, _) => LinearProgressIndicator(value: value),
-          ),
+          const Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              //todo adauga header cu scor ca in design
+              child: SizedBox.shrink()),
+          // todo adauga progressbar si animatie
           Padding(
             padding: const EdgeInsets.only(top: 40.0, bottom: 8.0),
             child: Text(
