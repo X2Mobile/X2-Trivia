@@ -2,6 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:x2trivia/domain/models/answer.dart';
 import 'package:x2trivia/domain/models/category.dart';
 
+import 'game_state.dart';
+
 sealed class GameEvent extends Equatable {
   const GameEvent();
 
@@ -50,4 +52,23 @@ final class GameSubmitAnswerEvent extends GameEvent {
 
   @override
   List<Object> get props => [];
+}
+
+final class GamePause extends GameEvent {
+  const GamePause();
+
+  @override
+  List<Object> get props => [];
+}
+
+
+final class GameResume extends GameEvent {
+  const GameResume({
+    required this.state,
+  });
+
+  final GamePaused state;
+
+  @override
+  List<Object> get props => [state];
 }

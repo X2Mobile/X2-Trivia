@@ -13,6 +13,7 @@
   "homePage": "Home Page",
   "categories": "Categories",
   "startPlaying": "Start playing",
+  "resumeGame": "Resume previous game",
   "game": "Game",
   "checkAnswer": "Check Answer",
   "nextQuestion": "Next Question",
@@ -20,6 +21,7 @@
   "currentScore": "Score: ",
   "endGameConfirmation": "Do you want to quit?",
   "quitGame": "Quit Game",
+  "pauseGame": "Pause Game",
   "progressLoss": "You'll lose your progress if you quit now.",
   "leaderboard": "Leaderboard",
 

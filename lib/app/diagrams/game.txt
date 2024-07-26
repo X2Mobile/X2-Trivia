@@ -1,0 +1,48 @@
+/*
+   https://github.com/sverweij/state-machine-cat
+   Online interpreter: https://state-machine-cat.js.org/
+ */
+
+
+/*
+   States
+ */
+
+initial,
+
+uninitialized {
+ "GameUninittialized",
+ "GameInitialFetching",
+ "GameInitialFetchingError";
+},
+
+GameInitialized {
+ "GameActive"{
+ "GamePaused",
+ "GameInProgress";
+},
+
+"GameEnded";
+};
+
+/*
+   Transitions between uninitialized states
+ */
+
+initial => "GameUninittialized";
+"GameUninittialized" => "GameInitialFetching" : GameQuestionsRequested;
+"GameInitialFetching"  => "GameInitialFetchingError";
+"GameInitialFetching"  => "GameInProgress";
+"GameInitialFetchingError"  => "GameUninittialized";
+
+/*
+   Transitions between initialized states
+ */
+
+"GameInProgress" => "GameInProgress" : GameAnswerSelect;
+"GameInProgress" => "GameInProgress" : GameAnswerUnselect;
+"GameInProgress" => "GameInProgress" : GameValidateAnswer;
+"GameInProgress" => "GameInProgress" : GameSubmitAnswer;
+"GameInProgress" => "GameEnded" : GameSubmitAnswer;
+"GameInProgress" => "GamePaused" : GamePause;
+"GamePaused" => "GameInProgress" : GameResume;

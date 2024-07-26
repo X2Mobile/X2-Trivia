@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:x2trivia/app/screen/categories/bloc/categories_bloc.dart';
 import 'package:x2trivia/app/screen/categories/bloc/categories_event.dart';
 import 'package:x2trivia/app/screen/categories/bloc/categories_state.dart';
+import 'package:x2trivia/app/blocs/game/game_state.dart';
 import 'package:x2trivia/app/util/build_context_helper.dart';
 
 import '../../../../data/utils/constants.dart';
 import '../../../../domain/models/category.dart';
 import '../../../components/buttons/category_button.dart';
+import '../../../blocs/game/game_bloc.dart';
 import '../../game/view/game_page.dart';
 
 class CategoriesPage extends StatelessWidget {
@@ -57,12 +59,17 @@ class _CategoriesPageViewState extends State<CategoriesPageView> {
         minimum: const EdgeInsets.symmetric(vertical: 16),
         child: BlocBuilder<CategoriesBloc, CategoriesState>(
           builder: (context, state) {
-            return Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                categoriesList(state.selectedCategory),
-                startGameButton(state.selectedCategory),
-              ],
+            return BlocBuilder<GameBloc, GameState>(
+              builder: (context, gameState) {
+                return Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    categoriesList(state.selectedCategory),
+                    resumeGameButton(gameState),
+                    startGameButton(state.selectedCategory),
+                  ],
+                );
+              }
             );
           },
         ),
@@ -95,4 +102,15 @@ class _CategoriesPageViewState extends State<CategoriesPageView> {
               child: Text(context.strings.startPlaying)),
         ),
       );
+
+  Widget resumeGameButton(GameState state) => Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+    child: SizedBox(
+      width: double.infinity,
+      child: FilledButton(
+          onPressed: state is GamePaused ? () => Navigator.of(context, rootNavigator: true).push(GamePage.resume(state: state)) : null,
+          child: Text(context.strings.resumeGame),
+      ),
+    ),
+  );
 }

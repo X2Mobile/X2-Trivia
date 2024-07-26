@@ -1,41 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:x2trivia/app/blocs/game/game_bloc.dart';
+import 'package:x2trivia/app/blocs/game/game_event.dart';
+import 'package:x2trivia/app/blocs/game/game_state.dart';
 import 'package:x2trivia/app/components/buttons/answer_button.dart';
-import 'package:x2trivia/app/screen/game/bloc/game_bloc.dart';
-import 'package:x2trivia/app/screen/game/bloc/game_event.dart';
-import 'package:x2trivia/app/screen/game/bloc/game_state.dart';
 import 'package:x2trivia/app/screen/score/view/score_page.dart';
 import 'package:x2trivia/app/theme/colors.dart';
 import 'package:x2trivia/app/util/build_context_helper.dart';
 import 'package:x2trivia/domain/models/answer.dart';
 import 'package:x2trivia/domain/models/category.dart';
 import 'package:x2trivia/domain/models/question.dart';
-import 'package:x2trivia/domain/repositories/questions_repository.dart';
 
 class GamePage extends StatelessWidget {
-  const GamePage({super.key, required this.category});
+  const GamePage({super.key, required this.category, this.state});
 
   static Route<void> route({required Category category}) => MaterialPageRoute(builder: (context) => GamePage(category: category));
 
+  static Route<void> resume({required GamePaused state}) => MaterialPageRoute(builder: (context) => GamePage(category: state.category, state: state));
+
   final Category category;
+
+  final GamePaused? state;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GameBloc(
-        questionsRepository: context.read<QuestionsRepository>(),
-        category: category,
-      ),
-      child: GamePageView(category: category),
-    );
+    return GamePageView(category: category, state: state);
   }
 }
 
 class GamePageView extends StatefulWidget {
-  const GamePageView({super.key, required this.category});
+  const GamePageView({super.key, required this.category, required this.state});
 
   final Category category;
+
+  final GamePaused? state;
 
   @override
   State<GamePageView> createState() => _GamePageViewState();
@@ -50,14 +49,23 @@ class _GamePageViewState extends State<GamePageView> {
     super.initState();
     gameBloc = context.read<GameBloc>();
     _category = widget.category;
+    if (widget.state != null) {
+      _onResumeGame(widget.state!);
+    } else {
+      _onStartNewGame();
+    }
   }
 
   void _onEndGame() async {
     showDialog(
       context: context,
-      builder: (context) => endGameConfirmation(context),
+      builder: (context) => endGameConfirmation(context, _onPauseGame),
     );
   }
+
+  void _onStartNewGame() => {gameBloc.add(GameQuestionsRequested(category: _category))};
+
+  void _onResumeGame(GamePaused state) => gameBloc.add(GameResume(state: state));
 
   void _onAnswerSelected(Answer answer) => gameBloc.add(GameAnswerSelect(answer: answer));
 
@@ -67,6 +75,8 @@ class _GamePageViewState extends State<GamePageView> {
 
   void _onSubmitAnswer() => gameBloc.add(const GameSubmitAnswerEvent());
 
+  void _onPauseGame() => gameBloc.add(const GamePause());
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -74,7 +84,7 @@ class _GamePageViewState extends State<GamePageView> {
       onPopInvoked: (didPop) => _onEndGame(),
       child: BlocListener<GameBloc, GameState>(
         listener: (context, state) {
-          if (state is GameLoadError) {
+          if (state is GameInitialFetchingError) {
             Fluttertoast.showToast(
               msg: state.exception,
               toastLength: Toast.LENGTH_SHORT,
@@ -124,7 +134,7 @@ class _GamePageViewState extends State<GamePageView> {
                 ],
               ),
             );
-          } else if (state is GameLoadInProgress) {
+          } else if (state is GameInitialFetching) {
             return const Center(child: CircularProgressIndicator());
           } else {
             return const SizedBox.shrink();
@@ -237,7 +247,7 @@ class _GamePageViewState extends State<GamePageView> {
       ]);
 }
 
-Widget endGameConfirmation(BuildContext context) {
+Widget endGameConfirmation(BuildContext context, VoidCallback onPauseGame) {
   return AlertDialog(
     title: Text(context.strings.endGameConfirmation),
     content: Text(context.strings.progressLoss),
@@ -251,6 +261,21 @@ Widget endGameConfirmation(BuildContext context) {
           ..pop()
           ..pop(),
         child: Text(context.strings.quitGame),
+      ),
+      BlocBuilder<GameBloc, GameState>(
+        builder: (_, state) {
+          return !(state is GameInProgress && state.questionIndex == state.questions.length - 1 && state.revealAnswer)
+              ? TextButton(
+                  onPressed: () {
+                    onPauseGame();
+                    Navigator.of(context)
+                      ..pop()
+                      ..pop();
+                  },
+                  child: Text(context.strings.pauseGame),
+                )
+              : const SizedBox.shrink();
+        },
       ),
     ],
   );
