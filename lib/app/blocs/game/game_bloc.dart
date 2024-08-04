@@ -51,7 +51,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   ) {
     return _handleStatesOnEvent(
       isNoOp: state is! GamePaused,
-      onGameUninitialized: () => handler.onGameResume(
+      onGameInitialized: () => handler.onGameResume(
         event,
         state as GamePaused,
         emit,
@@ -118,11 +118,11 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }) async {
     if (isNoOp) {
       return;
-    } else if (state is GameUninitialized || state is GameEnded || state is GamePaused) {
-      assert(onGameUninitialized != null, "Trb metoda onGameError");
+    } else if (state is GameUninitialized || state is GameEnded) {
+      assert(onGameUninitialized != null, "Missing onGameUninitialized");
       await onGameUninitialized!();
-    } else if (state is GameInProgress) {
-      assert(onGameInitialized != null, "Trb metoda onGameLoaded");
+    } else if (state is GameActive) {
+      assert(onGameInitialized != null, "Missing onGameInitialized");
       await onGameInitialized!();
     } else {
       throw UnimplementedError("No handler");

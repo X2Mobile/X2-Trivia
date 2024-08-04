@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:x2trivia/app/blocs/game/game_event.dart';
 import 'package:x2trivia/app/screen/categories/bloc/categories_bloc.dart';
 import 'package:x2trivia/app/screen/categories/bloc/categories_event.dart';
 import 'package:x2trivia/app/screen/categories/bloc/categories_state.dart';
@@ -36,17 +37,23 @@ class CategoriesPageView extends StatefulWidget {
 }
 
 class _CategoriesPageViewState extends State<CategoriesPageView> {
-  late final CategoriesBloc selectCategoryBloc;
+  late final CategoriesBloc categoriesBloc;
+  late final GameBloc gameBloc;
 
   @override
   void initState() {
     super.initState();
-    selectCategoryBloc = context.read<CategoriesBloc>();
+    categoriesBloc = context.read<CategoriesBloc>();
+    gameBloc = context.read<GameBloc>();
   }
 
-  void _onCategorySelected(Category category) => selectCategoryBloc.add(CategorySelect(category: category));
+  void _onCategorySelected(Category category) => categoriesBloc.add(CategorySelect(category: category));
 
-  void _onCategoryUnselected() => selectCategoryBloc.add(const CategoryUnselect());
+  void _onCategoryUnselected() => categoriesBloc.add(const CategoryUnselect());
+
+  void _onStartNewGame(Category category) => gameBloc.add(GameQuestionsRequested(category: category));
+
+  void _onResumeGame() => gameBloc.add(GameResume());
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +105,10 @@ class _CategoriesPageViewState extends State<CategoriesPageView> {
         child: SizedBox(
           width: double.infinity,
           child: FilledButton(
-              onPressed: selectedCategory != null ? () => Navigator.of(context, rootNavigator: true).push(GamePage.route(category: selectedCategory)) : null,
+              onPressed: selectedCategory != null ? () {
+                Navigator.of(context, rootNavigator: true).push(GamePage.route(category: selectedCategory));
+                _onStartNewGame(selectedCategory);
+              } : null,
               child: Text(context.strings.startPlaying)),
         ),
       );
@@ -108,7 +118,10 @@ class _CategoriesPageViewState extends State<CategoriesPageView> {
     child: SizedBox(
       width: double.infinity,
       child: FilledButton(
-          onPressed: state is GamePaused ? () => Navigator.of(context, rootNavigator: true).push(GamePage.resume(state: state)) : null,
+          onPressed: state is GamePaused ?  () {
+            Navigator.of(context, rootNavigator: true).push(GamePage.route(category: state.category));
+            _onResumeGame();
+          } : null,
           child: Text(context.strings.resumeGame),
       ),
     ),

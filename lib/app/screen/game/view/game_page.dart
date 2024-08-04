@@ -13,28 +13,22 @@ import 'package:x2trivia/domain/models/category.dart';
 import 'package:x2trivia/domain/models/question.dart';
 
 class GamePage extends StatelessWidget {
-  const GamePage({super.key, required this.category, this.state});
+  const GamePage({super.key, required this.category});
 
   static Route<void> route({required Category category}) => MaterialPageRoute(builder: (context) => GamePage(category: category));
 
-  static Route<void> resume({required GamePaused state}) => MaterialPageRoute(builder: (context) => GamePage(category: state.category, state: state));
-
   final Category category;
-
-  final GamePaused? state;
 
   @override
   Widget build(BuildContext context) {
-    return GamePageView(category: category, state: state);
+    return GamePageView(category: category);
   }
 }
 
 class GamePageView extends StatefulWidget {
-  const GamePageView({super.key, required this.category, required this.state});
+  const GamePageView({super.key, required this.category});
 
   final Category category;
-
-  final GamePaused? state;
 
   @override
   State<GamePageView> createState() => _GamePageViewState();
@@ -49,11 +43,6 @@ class _GamePageViewState extends State<GamePageView> {
     super.initState();
     gameBloc = context.read<GameBloc>();
     _category = widget.category;
-    if (widget.state != null) {
-      _onResumeGame(widget.state!);
-    } else {
-      _onStartNewGame();
-    }
   }
 
   void _onEndGame() async {
@@ -62,10 +51,6 @@ class _GamePageViewState extends State<GamePageView> {
       builder: (context) => endGameConfirmation(context, _onPauseGame),
     );
   }
-
-  void _onStartNewGame() => {gameBloc.add(GameQuestionsRequested(category: _category))};
-
-  void _onResumeGame(GamePaused state) => gameBloc.add(GameResume(state: state));
 
   void _onAnswerSelected(Answer answer) => gameBloc.add(GameAnswerSelect(answer: answer));
 
