@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:x2trivia/app/blocs/game/game_event.dart';
 import 'package:x2trivia/app/screen/categories/bloc/categories_bloc.dart';
 import 'package:x2trivia/app/screen/categories/bloc/categories_event.dart';
 import 'package:x2trivia/app/screen/categories/bloc/categories_state.dart';
+import 'package:x2trivia/app/blocs/game/game_state.dart';
 import 'package:x2trivia/app/util/build_context_helper.dart';
 
 import '../../../../data/utils/constants.dart';
 import '../../../../domain/models/category.dart';
 import '../../../components/buttons/category_button.dart';
+import '../../../blocs/game/game_bloc.dart';
 import '../../game/view/game_page.dart';
 
 class CategoriesPage extends StatelessWidget {
@@ -34,17 +37,23 @@ class CategoriesPageView extends StatefulWidget {
 }
 
 class _CategoriesPageViewState extends State<CategoriesPageView> {
-  late final CategoriesBloc selectCategoryBloc;
+  late final CategoriesBloc categoriesBloc;
+  late final GameBloc gameBloc;
 
   @override
   void initState() {
     super.initState();
-    selectCategoryBloc = context.read<CategoriesBloc>();
+    categoriesBloc = context.read<CategoriesBloc>();
+    gameBloc = context.read<GameBloc>();
   }
 
-  void _onCategorySelected(Category category) => selectCategoryBloc.add(CategorySelect(category: category));
+  void _onCategorySelected(Category category) => categoriesBloc.add(CategorySelect(category: category));
 
-  void _onCategoryUnselected() => selectCategoryBloc.add(const CategoryUnselect());
+  void _onCategoryUnselected() => categoriesBloc.add(const CategoryUnselect());
+
+  void _onStartNewGame(Category category) => gameBloc.add(GameQuestionsRequested(category: category));
+
+  void _onResumeGame() => gameBloc.add(GameResume());
 
   @override
   Widget build(BuildContext context) {
@@ -57,12 +66,17 @@ class _CategoriesPageViewState extends State<CategoriesPageView> {
         minimum: const EdgeInsets.symmetric(vertical: 16),
         child: BlocBuilder<CategoriesBloc, CategoriesState>(
           builder: (context, state) {
-            return Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                categoriesList(state.selectedCategory),
-                startGameButton(state.selectedCategory),
-              ],
+            return BlocBuilder<GameBloc, GameState>(
+              builder: (context, gameState) {
+                return Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    categoriesList(state.selectedCategory),
+                    resumeGameButton(gameState),
+                    startGameButton(state.selectedCategory),
+                  ],
+                );
+              }
             );
           },
         ),
@@ -91,8 +105,25 @@ class _CategoriesPageViewState extends State<CategoriesPageView> {
         child: SizedBox(
           width: double.infinity,
           child: FilledButton(
-              onPressed: selectedCategory != null ? () => Navigator.of(context, rootNavigator: true).push(GamePage.route(category: selectedCategory)) : null,
+              onPressed: selectedCategory != null ? () {
+                Navigator.of(context, rootNavigator: true).push(GamePage.route(category: selectedCategory));
+                _onStartNewGame(selectedCategory);
+              } : null,
               child: Text(context.strings.startPlaying)),
         ),
       );
+
+  Widget resumeGameButton(GameState state) => Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+    child: SizedBox(
+      width: double.infinity,
+      child: FilledButton(
+          onPressed: state is GamePaused ?  () {
+            Navigator.of(context, rootNavigator: true).push(GamePage.route(category: state.category));
+            _onResumeGame();
+          } : null,
+          child: Text(context.strings.resumeGame),
+      ),
+    ),
+  );
 }

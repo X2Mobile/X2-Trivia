@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:x2trivia/app/blocs/game/game_bloc.dart';
 import 'package:x2trivia/app/screen/home/view/home_page.dart';
 import 'package:x2trivia/app/screen/login/view/login_page.dart';
 import 'package:x2trivia/app/theme/theme.dart';
@@ -26,8 +27,11 @@ class TriviaApp extends StatelessWidget {
           RepositoryProvider(create: (context) => _scoreRepository),
           RepositoryProvider(create: (context) => _questionsRepository),
         ],
-        child: BlocProvider(
-          create: (context) => AppBloc(userRepository: _userRepository),
+        child: MultiBlocProvider(
+          providers:[
+            BlocProvider(create: (context) => AppBloc(userRepository: _userRepository)),
+            BlocProvider(create: (context) => GameBloc(questionsRepository: _questionsRepository)),
+          ],
           child: const AppView(),
         ),
       );

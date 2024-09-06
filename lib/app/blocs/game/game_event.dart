@@ -51,3 +51,16 @@ final class GameSubmitAnswerEvent extends GameEvent {
   @override
   List<Object> get props => [];
 }
+
+final class GamePause extends GameEvent {
+  const GamePause();
+
+  @override
+  List<Object> get props => [];
+}
+
+final class GameResume extends GameEvent {
+
+  @override
+  List<Object> get props => [];
+}
